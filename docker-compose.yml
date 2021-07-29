@@ -1,0 +1,42 @@
+version: '3.2'
+services:
+ prometheus:
+   image: prom/prometheus
+   ports:
+     - "9090:9090"
+   volumes:
+     - ./prometheus/config:/etc/prometheus/
+     - ./prometheus/data:/prometheus
+     #- /etc/localtime:/etc/localtime:ro
+     #- /etc/timezone:/etc/timezone:ro
+   command:
+     - '--config.file=/etc/prometheus/prometheus.yml'
+     - '--storage.tsdb.path=/prometheus'
+
+ azure-exporter:
+   build: .
+   ports:
+     - "8080:8080"
+   environment:
+     - AZURE_DEVOPS_URL=https://azdo-pdpt.corp.itsroot.biz
+     - AZURE_DEVOPS_ACCESS_TOKEN=b6bfsx3c7de46pf4mvfrzh3tdwz3nmrhqxkbf52edisog3aoweza
+     - AZURE_DEVOPS_ORGANISATION=ypsomed
+   depends_on:
+     - prometheus
+
+ grafana:
+   image: grafana/grafana
+   # optional - just a test from a tutorial
+   environment:
+    GF_INSTALL_PLUGINS: "grafana-clock-panel,grafana-simple-json-datasource"
+   ports:
+     - "3000:3000"
+   volumes:
+     - /etc/localtime:/etc/localtime:ro
+     - /etc/timezone:/etc/timezone:ro
+#    volumes:
+#      - grafana_data:/var/lib/grafana
+#      - ./grafana/provisioning/:/etc/grafana/provisioning/
+   depends_on:
+     - azure-exporter
+

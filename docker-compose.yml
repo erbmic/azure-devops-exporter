@@ -19,7 +19,7 @@ services:
      - "8080:8080"
    environment:
      - AZURE_DEVOPS_URL=https://azdo-pdpt.corp.itsroot.biz
-     - AZURE_DEVOPS_ACCESS_TOKEN=b6bfsx3c7de46pf4mvfrzh3tdwz3nmrhqxkbf52edisog3aoweza
+     - AZURE_DEVOPS_ACCESS_TOKEN=t3gm5t4tcm3xj7su2itxhtpgmtov6zxszzyfqbyiuu56bygzuzma
      - AZURE_DEVOPS_ORGANISATION=ypsomed
    depends_on:
      - prometheus

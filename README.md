@@ -1,6 +1,10 @@
-1. docker run -p 8080:8080 azure-monitoring-test --azuredevops.url=https://azdo-pdpt.corp.itsroot.biz/ypsomed --azuredevops.access-token=b6bfsx3c7de46pf4mvfrzh3tdwz3nmrhqxkbf52edisog3aoweza --azuredevops.organisation=ypsomed
+1. docker run -p 8080:8080 azure-monitoring-test --azuredevops.url=https://azdo-pdpt.corp.itsroot.biz/ypsomed --azuredevops.access-token=t3gm5t4tcm3xj7su2itxhtpgmtov6zxszzyfqbyiuu56bygzuzma --azuredevops.organisation=ypsomed
 2. add new metrics to prometheus yaml
 3. start prometheus
+---------------------
+
+docker compose up
+1. docker-compose up
 
 
 

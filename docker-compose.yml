@@ -1,4 +1,8 @@
-version: '3.2'
+version: '3.7'
+
+volumes:
+  grafana_data: {}
+
 services:
  prometheus:
    image: prom/prometheus
@@ -12,6 +16,8 @@ services:
    command:
      - '--config.file=/etc/prometheus/prometheus.yml'
      - '--storage.tsdb.path=/prometheus'
+     - '--web.console.templates=/etc/prometheus/consoles'
+     - '--web.console.libraries=/etc/prometheus/console_libraries'
 
  azure-exporter:
    build: .
@@ -21,22 +27,26 @@ services:
      - AZURE_DEVOPS_URL=https://azdo-pdpt.corp.itsroot.biz
      - AZURE_DEVOPS_ACCESS_TOKEN=t3gm5t4tcm3xj7su2itxhtpgmtov6zxszzyfqbyiuu56bygzuzma
      - AZURE_DEVOPS_ORGANISATION=ypsomed
+     - AZURE_DEVOPS_FILTER_AGENTPOOL=5
+     - AZURE_DEVOPS_FILTER_AGENTPOOL=3
    depends_on:
      - prometheus
 
  grafana:
    image: grafana/grafana
    # optional - just a test from a tutorial
-   environment:
-    GF_INSTALL_PLUGINS: "grafana-clock-panel,grafana-simple-json-datasource"
+   #environment:
+    #GF_INSTALL_PLUGINS: "grafana-clock-panel,grafana-simple-json-datasource"
    ports:
      - "3000:3000"
    volumes:
      - /etc/localtime:/etc/localtime:ro
      - /etc/timezone:/etc/timezone:ro
-#    volumes:
-#      - grafana_data:/var/lib/grafana
-#      - ./grafana/provisioning/:/etc/grafana/provisioning/
+   volumes:
+     - grafana_data:/var/lib/grafana
+     - ./grafana/provisioning/:/etc/grafana/provisioning/
+   env_file:
+     - ./grafana/config.monitoring
    depends_on:
      - azure-exporter
 

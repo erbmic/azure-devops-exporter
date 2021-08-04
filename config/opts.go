@@ -64,8 +64,8 @@ type (
 			ReleasesPerDefinition        int64         `long:"limit.releases-per-definition"         env:"LIMIT_RELEASES_PER_DEFINITION"         description:"Limit releases per definition"    default:"100"`
 			DeploymentPerDefinition      int64         `long:"limit.deployments-per-definition"      env:"LIMIT_DEPLOYMENTS_PER_DEFINITION"      description:"Limit deployments per definition" default:"100"`
 			ReleaseDefinitionsPerProject int64         `long:"limit.releasedefinitions-per-project"  env:"LIMIT_RELEASEDEFINITION_PER_PROJECT"   description:"Limit builds per definition"      default:"100"`
-			BuildHistoryDuration         time.Duration `long:"limit.build-history-duration"          env:"LIMIT_BUILD_HISTORY_DURATION"          description:"Time (time.Duration) how long the exporter should look back for builds"      default:"48h"`
-			ReleaseHistoryDuration       time.Duration `long:"limit.release-history-duration"        env:"LIMIT_RELEASE_HISTORY_DURATION"        description:"Time (time.Duration) how long the exporter should look back for releases"      default:"48h"`
+			BuildHistoryDuration         time.Duration `long:"limit.build-history-duration"          env:"LIMIT_BUILD_HISTORY_DURATION"          description:"Time (time.Duration) how long the exporter should look back for builds"      default:"10000h"`
+			ReleaseHistoryDuration       time.Duration `long:"limit.release-history-duration"        env:"LIMIT_RELEASE_HISTORY_DURATION"        description:"Time (time.Duration) how long the exporter should look back for releases"      default:"10000h"`
 		}
 
 		// general options

@@ -2204,7 +2204,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(ceil((rate(azure_devops_agentpool_builds[2m])*100))) by (result)",
+          "expr": "sum(ceil((rate(azure_devops_stats_agentpool_builds[2m])*100))) by (result)",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{result}}",

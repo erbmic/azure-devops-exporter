@@ -29,6 +29,7 @@ services:
      - AZURE_DEVOPS_URL=https://azdo.corp.itsroot.biz
      - AZURE_DEVOPS_ACCESS_TOKEN=seytitmeokcmv6bfio22cosjo4rrbkskcje66fo52cakkqw3judq
      - AZURE_DEVOPS_ORGANISATION=ypsomed
+     #- AZURE_DEVOPS_FILTER_AGENTPOOL=2
     #  - AZURE_DEVOPS_FILTER_AGENTPOOL=5
     #  - AZURE_DEVOPS_FILTER_AGENTPOOL=3
     #  - LIMIT_BUILD_HISTORY_DURATION=1000000h

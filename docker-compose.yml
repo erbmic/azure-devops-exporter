@@ -27,22 +27,22 @@ services:
      #- AZURE_DEVOPS_URL=https://azdo-pdpt.corp.itsroot.biz
      #- AZURE_DEVOPS_ACCESS_TOKEN=t3gm5t4tcm3xj7su2itxhtpgmtov6zxszzyfqbyiuu56bygzuzma
      - AZURE_DEVOPS_URL=https://azdo.corp.itsroot.biz
-     - AZURE_DEVOPS_ACCESS_TOKEN=ghscllaap24so2kb72jpsxgsxffqnqfjqi67sifagc24qpitvjuq
+     - AZURE_DEVOPS_ACCESS_TOKEN=seytitmeokcmv6bfio22cosjo4rrbkskcje66fo52cakkqw3judq
      - AZURE_DEVOPS_ORGANISATION=ypsomed
-     - AZURE_DEVOPS_FILTER_AGENTPOOL=5
-     - AZURE_DEVOPS_FILTER_AGENTPOOL=3
-     - LIMIT_BUILD_HISTORY_DURATION=1000000h
-     - LIMIT_RELEASE_HISTORY_DURATION=1000000h
-     - LIMIT_PROJECT=10000
-     - LIMIT_BUILDS_PER_PROJECT=100000
-     - LIMIT_BUILDS_PER_DEFINITION=100000
-     - LIMIT_RELEASES_PER_PROJECT=100000
-     - LIMIT_RELEASES_PER_DEFINITION=100000
-     - LIMIT_DEPLOYMENTS_PER_DEFINITION=100000
-     - LIMIT_RELEASEDEFINITION_PER_PROJECT=100000
-     - STATS_SUMMARY_MAX_AGE=1000000h
-     - SCRAPE_TIME=1m
-     - SCRAPE_TIME_LIVE=5s
+    #  - AZURE_DEVOPS_FILTER_AGENTPOOL=5
+    #  - AZURE_DEVOPS_FILTER_AGENTPOOL=3
+    #  - LIMIT_BUILD_HISTORY_DURATION=1000000h
+    #  - LIMIT_RELEASE_HISTORY_DURATION=1000000h
+    #  - LIMIT_PROJECT=10000
+    #  - LIMIT_BUILDS_PER_PROJECT=100000
+    #  - LIMIT_BUILDS_PER_DEFINITION=100000
+    #  - LIMIT_RELEASES_PER_PROJECT=100000
+    #  - LIMIT_RELEASES_PER_DEFINITION=100000
+    #  - LIMIT_DEPLOYMENTS_PER_DEFINITION=100000
+    #  - LIMIT_RELEASEDEFINITION_PER_PROJECT=100000
+    #  - STATS_SUMMARY_MAX_AGE=1000000h
+    #  - SCRAPE_TIME=1m
+    #  - SCRAPE_TIME_LIVE=5s
    depends_on:
      - prometheus
 
@@ -54,9 +54,8 @@ services:
    ports:
      - "3000:3000"
    volumes:
-     - /etc/localtime:/etc/localtime:ro
-     - /etc/timezone:/etc/timezone:ro
-   volumes:
+     #- /etc/localtime:/etc/localtime:ro
+     #- /etc/timezone:/etc/timezone:ro
      - grafana_data:/var/lib/grafana
      - ./grafana/provisioning/:/etc/grafana/provisioning/
    env_file:

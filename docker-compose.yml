@@ -18,16 +18,19 @@ services:
      - '--storage.tsdb.path=/prometheus'
      - '--web.console.templates=/etc/prometheus/consoles'
      - '--web.console.libraries=/etc/prometheus/console_libraries'
+   networks:
+     - monitoring-network
 
  azure-exporter:
    build: .
    ports:
      - "8080:8080"
+   env_file:
+     #- C:\Users\ERMI2\.monitoring.env
+     - /Users/ERMI2/.env
    environment:
-     #- AZURE_DEVOPS_URL=https://azdo-pdpt.corp.itsroot.biz
-     #- AZURE_DEVOPS_ACCESS_TOKEN=t3gm5t4tcm3xj7su2itxhtpgmtov6zxszzyfqbyiuu56bygzuzma
      - AZURE_DEVOPS_URL=https://azdo.corp.itsroot.biz
-     - AZURE_DEVOPS_ACCESS_TOKEN=mnd3c7rqhlz4dymbtkg5inbe6hpg4rompqp5bh77nhmstvhf6wbq
+     - AZURE_DEVOPS_ACCESS_TOKEN=${AZDO_API_KEY}
      - AZURE_DEVOPS_ORGANISATION=ypsomed
      #- AZURE_DEVOPS_FILTER_AGENTPOOL=2
     #  - AZURE_DEVOPS_FILTER_AGENTPOOL=5
@@ -46,6 +49,8 @@ services:
     #  - SCRAPE_TIME_LIVE=5s
    depends_on:
      - prometheus
+   networks:
+     - monitoring-network
 
  grafana:
    image: grafana/grafana
@@ -63,4 +68,9 @@ services:
      - ./grafana/config.monitoring
    depends_on:
      - azure-exporter
+   networks:
+     - monitoring-network
 
+networks:
+ monitoring-network:
+  driver: bridge

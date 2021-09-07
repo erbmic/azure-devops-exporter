@@ -29,7 +29,7 @@ services:
    restart: always
    env_file:
      #- C:\Users\ERMI2\.monitoring.env
-     - /Users/ERMI2/.env
+     - .env
    environment:
      - AZURE_DEVOPS_URL=https://azdo.corp.itsroot.biz
      - AZURE_DEVOPS_ACCESS_TOKEN=${AZDO_API_KEY}

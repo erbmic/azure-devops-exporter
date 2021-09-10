@@ -29,4 +29,5 @@ stages:
         tags: |
           $(tag)
     - bash: |
-      echo $tag
+        echo $tag
+    continueOnError: true

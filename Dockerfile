@@ -2,11 +2,8 @@ FROM golang:1.16 as build
 
 WORKDIR /go/src/github.com/webdevops/azure-devops-exporter
 
-#RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
-#COPY ./certs/* /usr/local/share/ca-certificates/
-#RUN update-ca-certificates
-ADD ./certs/its_issuing_ca.crt /etc/ssl/certs/
-ADD ./certs/its_root_ca.crt /etc/ssl/certs/
+# ADD ./certs/its_issuing_ca.crt /etc/ssl/certs/
+# ADD ./certs/its_root_ca.crt /etc/ssl/certs/
 
 # Get deps (cached)
 COPY ./go.mod /go/src/github.com/webdevops/azure-devops-exporter

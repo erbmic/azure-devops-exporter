@@ -5,12 +5,20 @@
 trigger:
 - main
 - feature/*
+- fix/*
+- test/*
 
 resources:
 - repo: self
 
 variables:
+  version: 1.0.0
+  onMain: $[eq(variables['Build.SourceBranch'], 'main')]
+  onRelease: $[startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')]
+  dockerReleaseRegistryName: michaelerb
   tag: '$(Build.BuildId)'
+- group: rt_sa_credentials
+- group: azdo_credentials
 
 stages:
 - stage: Build
@@ -29,6 +37,23 @@ stages:
         tags: |
           $(tag)
     - bash: |
-      echo $tag
-    failOnStderr: false
-    continueOnError: true
+        # determine tag
+        tag=$(version)"-"$(Build.BuildNumber)
+        registryHost=$(dockerReleaseRegistryName)
+
+        # build
+        imageName=$dockerReleaseRegistryName"/"$Build.Repository.Name":"$tag
+        echo $imageName
+        docker build --no-cache -t $imageName .
+
+        # push
+        if [ $(onRelease) = True ] || [ $(onMain) = True ] ; then
+        echo $(dh_credentials.password) | docker login $registryHost --username $(dh_credentials.username) --password-stdin
+        docker push $imageName
+        docker logout $registryHost
+        fi
+
+        # clean up
+        docker rmi $imageName
+
+

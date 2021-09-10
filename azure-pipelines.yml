@@ -134,8 +134,7 @@ stages:
         registryHost=$(dockerReleaseRegistryName)
 
         # build
-        echo $testerx
-        imageName=$registryHost"/"$testerx":"$tag
+        imageName=$registryHost"/"azure-devops-exporter":"$tag
         echo $imageName
         docker build --no-cache -t $imageName .
 

@@ -26,5 +26,5 @@ stages:
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile'
         tags: |
-          #$(tag)
-          $(Build.SourceVersion)
+          $(tag)
+          #$(Build.SourceVersion)

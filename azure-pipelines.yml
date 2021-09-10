@@ -17,8 +17,7 @@ variables:
   onRelease: $[startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')]
   dockerReleaseRegistryName: michaelerb
   tag: '$(Build.BuildId)'
-- group: rt_sa_credentials
-- group: azdo_credentials
+- group: docker_hub_credentials
 
 stages:
 - stage: Build

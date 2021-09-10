@@ -45,7 +45,7 @@ stages:
         echo $imageName
         docker build --no-cache -t $imageName .
 
-        echo $(dh_credentials.password) | docker login $registryHost --username $(dh_credentials.username) --password-stdin
+        echo $(dh_credentials.password) | docker login --username $(dh_credentials.username) --password-stdin
         docker push $imageName
         docker logout $registryHost
 

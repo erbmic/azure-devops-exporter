@@ -1,0 +1,77 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: azure-secret
+  namespace: do
+type: Opaque #default type for arbitrary key-value pairs
+data: 
+  #values must be base64 encoded!
+  #Linux: echo -n 'username' | base64
+  azdo-api-secret: emo2Y2IyMmFnb2ZheGgyc3lqZWc2YWF4ejdjM3c2YW8zNXZlaGxzbWRmeGc1aGdqdnE2cQ==
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: azure-configmap
+  namespace: do
+data:
+  #for on premises
+  #azure-url: https://azdo.corp.itsroot.biz
+  azure-organisation: michaelerb
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: azure-exporter-service
+  namespace: do
+spec:
+  selector: # to connect to the pod through label
+    app: azure-exporter
+  ports:
+    - protocol: TCP
+      port: 8080 # service port
+      targetPort: 8080 # containerPort of deployment, has to match with containerport of pod
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: azure-exporter
+  namespace: do
+  labels:
+    app: azure-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: azure-exporter
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        io.kompose.network/monitoring-network: "true"
+        app: azure-exporter
+    spec:
+      containers:
+      - name: azure-exporter
+        image: michaelerb/azure-devops-exporter_azure-exporter:1.0
+        imagePullPolicy: IfNotPresent
+        imagePullPolicy: ""
+        ports:
+        - containerPort: 8080
+        env:
+        - name: AZURE_DEVOPS_ACCESS_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: azure-secret
+              key: azdo-api-secret
+        - name: AZURE_DEVOPS_ORGANISATION
+          valueFrom: 
+            configMapKeyRef:
+              name: azure-configmap
+              key: azure-organisation
+# for on premises purposes
+        # - name: AZURE_DEVOPS_URL
+        #   valueFrom: 
+        #     configMapKeyRef:
+        #       name: azure-configmap
+        #       key: azure-url

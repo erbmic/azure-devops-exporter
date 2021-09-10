@@ -1,0 +1,137 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: grafana-secret-ha
+    namespace: do
+    labels:
+        file: grafana-secret-ha
+type: Opaque
+data:
+    grafanadb-user: YWRtaW4=
+    grafanadb-password: YWRtaW4=
+    grafana-admin-password: YWRtaW4=
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana-service
+  namespace: do
+  labels: 
+    app: grafana
+    component: grafana-core
+spec:
+  selector:
+      app: grafana
+      component: grafana-core
+  type: LoadBalancer
+  ports:
+  - port: 3000
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: grafana
+  namespace: do
+  labels:
+    app: grafana
+    component: grafana-core
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: grafana
+      component: grafana-core
+  serviceName: grafana-service
+  template:
+    metadata:
+      labels:
+        app: grafana
+        component: grafana-core
+    spec:
+      containers:
+      - name: grafana
+        image: grafana/grafana
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            cpu: 100m
+            memory: 100Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        env:
+        # - name: GF_SERVER_DOMAIN
+        #   value: "sample.server.com"
+        # - name: GF_SERVER_ROOT_URL
+        #   value: "http://sample.server.com/"
+        - name: GF_AUTH_BASIC_ENABLED
+          value: "true"
+        - name: GF_AUTH_ANONYMOUS_ENABLED
+          value: "false"
+        - name: GF_DATABASE_TYPE
+          value: "postgres"
+        - name: GF_DATABASE_HOST
+          value: "postgres-ha-service.do.svc.cluster.local:5432"
+        - name: GF_DATABASE_NAME
+          value: "grafanadb"
+        - name: GF_DATABASE_USER
+          valueFrom:
+            secretKeyRef:
+              name: grafana-secret-ha
+              key: grafanadb-user
+        - name: GF_DATABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: grafana-secret-ha
+              key: grafanadb-password
+        - name:  GF_SECURITY_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: grafana-secret-ha
+              key: grafana-admin-password
+        readinessProbe:
+          httpGet:
+            path: /login
+            port: 3000
+        volumeMounts:
+        - name: config-grafana-ha
+          mountPath: /etc/grafana/grafana.ini
+          subPath: grafana.ini
+
+        - name: grafana-datasources
+          mountPath: /etc/grafana/provisioning/datasources
+
+        - name: grafana-dashboardsources
+          mountPath: /etc/grafana/provisioning/dashboards
+
+      volumes:
+      - name: grafana-datasources
+        configMap:
+          name: grafana-datasources
+      - name: grafana-dashboardsources
+        configMap:
+          name: grafana-dashboardsources
+      - name: config-grafana-ha
+        configMap:
+          defaultMode: 420
+          name: config-grafana-ha
+      initContainers:
+      - name: fix-volume-permissions-to-grafana
+        securityContext:
+          runAsUser: 0
+          runAsGroup: 0
+        image: busybox
+        command: ["sh", "-c", "chown -R 0:0 /var/lib/grafana"]
+        volumeMounts:
+        - name: grafana-volume
+          mountPath: /var/lib/grafana
+
+  volumeClaimTemplates:
+  - metadata:
+      name: grafana-volume
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: managed-premium
+      resources:
+        requests:
+          storage: 1Gi

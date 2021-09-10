@@ -1,0 +1,3281 @@
+apiVersion: v1
+data:
+  grafana.ini: |
+    ##################### Grafana Configuration Example #####################
+    #
+    # Everything has defaults so you only need to uncomment things you want to
+    # change
+    # possible values : production, development
+    ; app_mode = development
+    # instance name, defaults to HOSTNAME environment variable value or hostname if HOSTNAME var is empty
+    ; instance_name = ${HOSTNAME}
+    #################################### Paths ####################################
+    [paths]
+    # Path to where grafana can store temp files, sessions, and the sqlite3 db (if that is used)
+    #
+    ;data = /var/lib/grafana
+    #
+    # Directory where grafana can store logs
+    #
+    ;logs = /var/log/grafana
+    #
+    # Directory where grafana will automatically scan and look for plugins
+    #
+    ;plugins = /var/lib/grafana/plugins
+    #
+    #################################### Server ####################################
+    [server]
+    # Protool (http, https, socket)
+    ;protocol = http
+    # The ip address to bind to, empty will bind to all interfaces
+    ;http_addr =
+    # The http port  to use
+    ;http_port = 3000
+    # The public facing domain name used to access grafana from a browser
+    ;domain = localhost
+    # Redirect to correct domain if host header does not match domain
+    # Prevents DNS rebinding attacks
+    ;enforce_domain = false
+    # The full public facing url you use in browser, used for redirects and emails
+    # If you use reverse proxy and sub path specify full url (with sub path)
+    #root_url = "sample.server.com"
+    # Log web requests
+    ;router_logging = false
+    # the path relative working path
+    ;static_root_path = public
+    # enable gzip
+    ;enable_gzip = false
+    # https certs & key file
+    ;cert_file =
+    ;cert_key =
+    # Unix socket path
+    ;socket =
+    #################################### Database ####################################
+    [database]
+    # You can configure the database connection by specifying type, host, name, user and password
+    # as seperate properties or as on string using the url propertie.
+    # Either "mysql", "postgres" or "sqlite3", it's your choice
+    # type = mysql
+    # host = 127.0.0.1:3306
+    ;name = grafana
+    ;user = root
+    # If the password contains # or ; you have to wrap it with trippel quotes. Ex """#password;"""
+    ;password =
+    # Use either URL or the previous fields to configure the database
+    # Example: mysql://user:secret@host:port/database
+    ;url =
+    # For "postgres" only, either "disable", "require" or "verify-full"
+    ;ssl_mode = disable
+    # For "sqlite3" only, path relative to data_path setting
+    ;path = grafana.db
+    # Max conn setting default is 0 (mean not set)
+    ;max_idle_conn =
+    ;max_open_conn =
+    #################################### Session ####################################
+    [session]
+    # Either "memory", "file", "redis", "mysql", "postgres", default is "file"
+    ;provider = file
+    # Provider config options
+    # memory: not have any config yet
+    # file: session dir path, is relative to grafana data_path
+    # redis: config like redis server e.g. `addr=127.0.0.1:6379,pool_size=100,db=grafana`
+    # mysql: go-sql-driver/mysql dsn config string, e.g. `user:password@tcp(127.0.0.1:3306)/database_name`
+    # postgres: user=a password=b host=localhost port=5432 dbname=c sslmode=disable
+    ;provider_config = sessions
+    # Session cookie name
+    ;cookie_name = grafana_sess
+    # If you use session in https only, default is false
+    ;cookie_secure = false
+    # Session life time, default is 86400
+    ;session_life_time = 86400
+    #################################### Data proxy ###########################
+    [dataproxy]
+    # This enables data proxy logging, default is false
+    ;logging = false
+    #################################### Analytics ####################################
+    [analytics]
+    # Server reporting, sends usage counters to stats.grafana.org every 24 hours.
+    # No ip addresses are being tracked, only simple counters to track
+    # running instances, dashboard and error counts. It is very helpful to us.
+    # Change this option to false to disable reporting.
+    ;reporting_enabled = true
+    # Set to false to disable all checks to https://grafana.net
+    # for new vesions (grafana itself and plugins), check is used
+    # in some UI views to notify that grafana or plugin update exists
+    # This option does not cause any auto updates, nor send any information
+    # only a GET request to http://grafana.com to get latest versions
+    ;check_for_updates = true
+    # Google Analytics universal tracking code, only enabled if you specify an id here
+    ;google_analytics_ua_id =
+    #################################### Security ####################################
+    [security]
+    # default admin user, created on startup
+    ;admin_user = test
+    # default admin password, can be changed before first start of grafana,  or in profile settings
+    ;admin_password = test
+    # used for signing
+    ;secret_key = SW2YcwTIb9zpOOhoPsMm
+    # Auto-login remember days
+    ;login_remember_days = 7
+    ;cookie_username = grafana_user
+    ;cookie_remember_name = grafana_remember
+    # disable gravatar profile images
+    ;disable_gravatar = fals
+    # data source proxy whielist (ip_or_domain:port separated by spaces)
+    ;data_source_proxy_whielist =
+    [snapshots]
+    # snapshot sharing options
+    ;external_enabled = true
+    ;external_snapshot_url = https://snapshots-origin.raintank.io
+    ;external_snapshot_name = Publish to snapshot.raintank.io
+    # remove expired snapshot
+    ;snapshot_remove_expired = true
+    # remove snapshots after 90 days
+    ;snapshot_TTL_days = 90
+    #################################### Users ####################################
+    [users]
+    # disable user signup / registration
+    ;allow_sign_up = true
+    # Allow non admin users to create organizations
+    ;allow_org_create = true
+    # Set to true to automatically assign new users to the default organization (id 1)
+    ;auto_assign_org = true
+    # Default role new users will be automatically assigned (if disabled above is set to true)
+    ;auto_assign_org_role = Viewer
+    # Background text for the user field on the login page
+    ;login_hint = email or username
+    # Default UI theme ("dark" or "light")
+    ;default_theme = dark
+    [auth]
+    # Set to true to disable (hide) the login form, useful if you use OAuth, defaults to false
+    ;disable_login_form = false
+    # Set to true to disable the signout link in the side menu. useful if you use auth.proxy, defaults to false
+    ;disable_signout_menu = false
+    #################################### Anonymous Auth ##########################
+    [auth.anonymous]
+    # enable anonymous access
+    ;enabled = false
+    # specify organization name that should be used for unauthenticated users
+    ;org_name = Grafana Sample
+    # specify role for unauthenticated users
+    ;org_role = Viewer
+    #################################### Github Auth ##########################
+    [auth.github]
+    ;enabled = false
+    ;allow_sign_up = true
+    ;client_id = some_id
+    ;client_secret = some_secret
+    ;scopes = user:email,read:org
+    ;auth_url = https://github.com/login/oauth/authorize
+    ;token_url = https://github.com/login/oauth/access_token
+    ;api_url = https://api.github.com/user
+    ;team_ids =
+    ;allowed_organizations =
+    #################################### Google Auth ##########################
+    [auth.google]
+    ;enabled = false
+    ;allow_sign_up = true
+    ;client_id = some_client_id
+    ;client_secret = some_client_secret
+    ;scopes = https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email
+    ;auth_url = https://accounts.google.com/o/oauth2/auth
+    ;token_url = https://accounts.google.com/o/oauth2/token
+    ;api_url = https://www.googleapis.com/oauth2/v1/userinfo
+    ;allowed_domains =
+    #################################### Generic OAuth ##########################
+    [auth.generic_oauth]
+    ;enabled = false
+    ;name = OAuth
+    ;allow_sign_up = true
+    ;client_id = some_id
+    ;client_secret = some_secret
+    ;scopes = user:email,read:org
+    ;auth_url = https://foo.bar/login/oauth/authorize
+    ;token_url = https://foo.bar/login/oauth/access_token
+    ;api_url = https://foo.bar/user
+    ;team_ids =
+    ;allowed_organizations =
+    #################################### Grafana.com Auth ####################
+    [auth.grafana_com]
+    ;enabled = false
+    ;allow_sign_up = true
+    ;client_id = some_id
+    ;client_secret = some_secret
+    ;scopes = user:email
+    ;allowed_organizations =
+    #################################### Auth Proxy ##########################
+    [auth.proxy]
+    ;enabled = false
+    ;header_name = X-WEBAUTH-USER
+    ;header_property = username
+    ;auto_sign_up = true
+    ;ldap_sync_ttl = 60
+    ;whitelist = 192.168.1.1, 192.168.2.1
+    #################################### Basic Auth ##########################
+    [auth.basic]
+    ;enabled = true
+    #################################### Auth LDAP ##########################
+    [auth.ldap]
+    ;enabled = false
+    ;config_file = /etc/grafana/ldap.toml
+    ;allow_sign_up = true
+    #################################### SMTP / Emailing ##########################
+    [smtp]
+    enabled = true
+    host =  smtp.gmail.com:465
+    user = gmailaccount@gmail.com
+    # If the password contains # or ; you have to wrap it with trippel quotes. Ex """#password;"""
+    password = YourPassword
+    ;cert_file =
+    ;key_file =
+    skip_verify = true
+    from_address = grafana@sample.server.com
+    ;from_name = Grafana
+    [emails]
+    ;welcome_email_on_sign_up = false
+    #################################### Logging ##########################
+    [log]
+    # Either "console", "file", "syslog". Default is console and  file
+    # Use space to separate multiple modes, e.g. "console file"
+    ;mode = console file
+    # Either "debug", "info", "warn", "error", "critical", default is "info"
+    ;level = info
+    # optional settings to set different levels for specific loggers. Ex filters = sqlstore:debug
+    ;filters =
+    # For "console" mode only
+    [log.console]
+    ;level =
+    # log line format, valid options are text, console and json
+    ;format = console
+    # For "file" mode only
+    [log.file]
+    ;level =
+    # log line format, valid options are text, console and json
+    ;format = text
+    # This enables automated log rotate(switch of following options), default is true
+    ;log_rotate = true
+    # Max line number of single file, default is 1000000
+    ;max_lines = 1000000
+    # Max size shift of single file, default is 28 means 1 << 28, 256MB
+    ;max_size_shift = 28
+    # Segment log daily, default is true
+    ;daily_rotate = true
+    # Expired days of log file(delete after max days), default is 7
+    ;max_days = 7
+    [log.syslog]
+    ;level =
+    # log line format, valid options are text, console and json
+    ;format = text
+    # Syslog network type and address. This can be udp, tcp, or unix. If left blank, the default unix endpoints will be used.
+    ;network =
+    ;address =
+    # Syslog facility. user, daemon and local0 through local7 are valid.
+    ;facility =
+    # Syslog tag. By default, the process' argv[0] is used.
+    ;tag =
+    #################################### AMQP Event Publisher ##########################
+    [event_publisher]
+    ;enabled = false
+    ;rabbitmq_url = amqp://localhost/
+    ;exchange = grafana_events
+    ;#################################### Dashboard JSON files ##########################
+    [dashboards.json]
+    ;enabled = false
+    ;path = /var/lib/grafana/dashboards
+    #################################### Alerting ############################
+    [alerting]
+    # Disable alerting engine & UI features
+    ;enabled = true
+    # Makes it possible to turn off alert rule execution but alerting UI is visible
+    ;execute_alerts = true
+    #################################### Internal Grafana Metrics ##########################
+    # Metrics available at HTTP API Url /api/metrics
+    [metrics]
+    # Disable / Enable internal metrics
+    ;enabled           = true
+    # Publish interval
+    ;interval_seconds  = 10
+    # Send internal metrics to Graphite
+    [metrics.graphite]
+    # Enable by setting the address setting (ex localhost:2003)
+    ;address =
+    ;prefix = prod.grafana.%(instance_name)s.
+    #################################### Grafana.com integration  ##########################
+    # Url used to to import dashboards directly from Grafana.com
+    [grafana_com]
+    ;url = https://grafana.com
+    #################################### External image storage ##########################
+    [external_image_storage]
+    # Used for uploading images to public servers so they can be included in slack/email messages.
+    # you can choose between (s3, webdav)
+    ;provider =
+    [external_image_storage.s3]
+    ;bucket_url =
+    ;access_key =
+    ;secret_key =
+    [external_image_storage.webdav]
+    ;url =
+    ;public_url =
+    ;username =
+    ;password =
+kind: ConfigMap
+metadata:
+  name: config-grafana-ha
+  namespace: do
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-datasources
+  namespace: do
+data:
+  datasource.yml: |
+    # config file version
+    apiVersion: 1
+
+    # list of datasources that should be deleted from the database
+    deleteDatasources:
+      - name: Prometheus
+        orgId: 1
+
+    # list of datasources to insert/update depending
+    # whats available in the database
+    datasources:
+      # <string, required> name of the datasource. Required
+    - name: Prometheus
+      # <string, required> datasource type. Required
+      type: prometheus
+      # <string, required> access mode. direct or proxy. Required
+      access: proxy
+      # <int> org id. will default to orgId 1 if not specified
+      orgId: 1
+      # <string> url
+      url: http://prometheus-service.do.svc.cluster.local:9090
+      # <string> database password, if used
+      password:
+      # <string> database user, if used
+      user:
+      # <string> database name, if used
+      database:
+      # <bool> enable/disable basic auth
+      basicAuth: true
+      # <string> basic auth username
+      basicAuthUser: admin
+      # <string> basic auth password
+      basicAuthPassword: password
+      # <bool> enable/disable with credentials headers
+      withCredentials:
+      # <bool> mark as default datasource. Max one per org
+      isDefault: true
+      # <map> fields that will be converted to json and stored in json_data
+      jsonData:
+        graphiteVersion: "1.1"
+        tlsAuth: false
+        tlsAuthWithCACert: false
+      # <string> json object of data that will be encrypted.
+      secureJsonData:
+        tlsCACert: "..."
+        tlsClientCert: "..."
+        tlsClientKey: "..."
+      version: 1
+      # <bool> allow users to edit datasources from the UI.
+      editable: true
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboardsources
+  namespace: do
+data:
+  dashboard.yml: |
+    apiVersion: 1
+    providers:
+    - name: 'Prometheus'
+      orgId: 1
+      folder: ''
+      type: file
+      disableDeletion: false
+      editable: true
+      options:
+        path: /etc/grafana/provisioning/dashboards
+  devops-monitoring.json: |
+    {
+      "annotations": {
+        "list": [
+          {
+            "builtIn": 1,
+            "datasource": "-- Grafana --",
+            "enable": true,
+            "hide": true,
+            "iconColor": "rgba(0, 211, 255, 1)",
+            "name": "Annotations & Alerts",
+            "type": "dashboard"
+          }
+        ]
+      },
+      "editable": true,
+      "gnetId": null,
+      "graphTooltip": 0,
+      "id": 28,
+      "iteration": 1554131201181,
+      "links": [],
+      "panels": [
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorPostfix": false,
+          "colorPrefix": false,
+          "colorValue": false,
+          "colors": [
+            "#d44a3a",
+            "rgba(237, 129, 40, 0.89)",
+            "#299c46"
+          ],
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "gridPos": {
+            "h": 2,
+            "w": 2.4,
+            "x": 0,
+            "y": 0
+          },
+          "id": 25,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "maxPerRow": 12,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "repeat": "buildname",
+          "repeatDirection": "h",
+          "scopedVars": {
+            "buildname": {
+              "selected": false,
+              "text": "Alerting",
+              "value": "Alerting"
+            }
+          },
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": true,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "azure_devops_build_latest_info{buildName=\"$buildname\"}",
+              "format": "time_series",
+              "instant": true,
+              "intervalFactor": 1,
+              "legendFormat": "{{buildNumber}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": "0.5, 0.8",
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "",
+          "transparent": true,
+          "type": "singlestat",
+          "valueFontSize": "50%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            },
+            {
+              "op": "=",
+              "text": "Failed",
+              "value": "022"
+            },
+            {
+              "op": "=",
+              "text": "Success",
+              "value": "122"
+            }
+          ],
+          "valueName": "name"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorPostfix": false,
+          "colorPrefix": false,
+          "colorValue": false,
+          "colors": [
+            "#d44a3a",
+            "rgba(237, 129, 40, 0.89)",
+            "#299c46"
+          ],
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "gridPos": {
+            "h": 2,
+            "w": 2.4,
+            "x": 2.4,
+            "y": 0
+          },
+          "id": 46,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "maxPerRow": 12,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "repeat": null,
+          "repeatDirection": "h",
+          "repeatIteration": 1554131201181,
+          "repeatPanelId": 25,
+          "scopedVars": {
+            "buildname": {
+              "selected": false,
+              "text": "Api",
+              "value": "Api"
+            }
+          },
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": true,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "azure_devops_build_latest_info{buildName=\"$buildname\"}",
+              "format": "time_series",
+              "instant": true,
+              "intervalFactor": 1,
+              "legendFormat": "{{buildNumber}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": "0.5, 0.8",
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "",
+          "transparent": true,
+          "type": "singlestat",
+          "valueFontSize": "50%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            },
+            {
+              "op": "=",
+              "text": "Failed",
+              "value": "022"
+            },
+            {
+              "op": "=",
+              "text": "Success",
+              "value": "122"
+            }
+          ],
+          "valueName": "name"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorPostfix": false,
+          "colorPrefix": false,
+          "colorValue": false,
+          "colors": [
+            "#d44a3a",
+            "rgba(237, 129, 40, 0.89)",
+            "#299c46"
+          ],
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "gridPos": {
+            "h": 2,
+            "w": 2.4,
+            "x": 4.8,
+            "y": 0
+          },
+          "id": 47,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "maxPerRow": 12,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "repeat": null,
+          "repeatDirection": "h",
+          "repeatIteration": 1554131201181,
+          "repeatPanelId": 25,
+          "scopedVars": {
+            "buildname": {
+              "selected": false,
+              "text": "ApiEtl",
+              "value": "ApiEtl"
+            }
+          },
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": true,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "azure_devops_build_latest_info{buildName=\"$buildname\"}",
+              "format": "time_series",
+              "instant": true,
+              "intervalFactor": 1,
+              "legendFormat": "{{buildNumber}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": "0.5, 0.8",
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "",
+          "transparent": true,
+          "type": "singlestat",
+          "valueFontSize": "50%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            },
+            {
+              "op": "=",
+              "text": "Failed",
+              "value": "022"
+            },
+            {
+              "op": "=",
+              "text": "Success",
+              "value": "122"
+            }
+          ],
+          "valueName": "name"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorPostfix": false,
+          "colorPrefix": false,
+          "colorValue": false,
+          "colors": [
+            "#d44a3a",
+            "rgba(237, 129, 40, 0.89)",
+            "#299c46"
+          ],
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "gridPos": {
+            "h": 2,
+            "w": 2.4,
+            "x": 7.199999999999999,
+            "y": 0
+          },
+          "id": 48,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "maxPerRow": 12,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "repeat": null,
+          "repeatDirection": "h",
+          "repeatIteration": 1554131201181,
+          "repeatPanelId": 25,
+          "scopedVars": {
+            "buildname": {
+              "selected": false,
+              "text": "DataExport",
+              "value": "DataExport"
+            }
+          },
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": true,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "azure_devops_build_latest_info{buildName=\"$buildname\"}",
+              "format": "time_series",
+              "instant": true,
+              "intervalFactor": 1,
+              "legendFormat": "{{buildNumber}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": "0.5, 0.8",
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "",
+          "transparent": true,
+          "type": "singlestat",
+          "valueFontSize": "50%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            },
+            {
+              "op": "=",
+              "text": "Failed",
+              "value": "022"
+            },
+            {
+              "op": "=",
+              "text": "Success",
+              "value": "122"
+            }
+          ],
+          "valueName": "name"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorPostfix": false,
+          "colorPrefix": false,
+          "colorValue": false,
+          "colors": [
+            "#d44a3a",
+            "rgba(237, 129, 40, 0.89)",
+            "#299c46"
+          ],
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "gridPos": {
+            "h": 2,
+            "w": 2.4,
+            "x": 9.6,
+            "y": 0
+          },
+          "id": 49,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "maxPerRow": 12,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "repeat": null,
+          "repeatDirection": "h",
+          "repeatIteration": 1554131201181,
+          "repeatPanelId": 25,
+          "scopedVars": {
+            "buildname": {
+              "selected": false,
+              "text": "ETLData",
+              "value": "ETLData"
+            }
+          },
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": true,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "azure_devops_build_latest_info{buildName=\"$buildname\"}",
+              "format": "time_series",
+              "instant": true,
+              "intervalFactor": 1,
+              "legendFormat": "{{buildNumber}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": "0.5, 0.8",
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "",
+          "transparent": true,
+          "type": "singlestat",
+          "valueFontSize": "50%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            },
+            {
+              "op": "=",
+              "text": "Failed",
+              "value": "022"
+            },
+            {
+              "op": "=",
+              "text": "Success",
+              "value": "122"
+            }
+          ],
+          "valueName": "name"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorPostfix": false,
+          "colorPrefix": false,
+          "colorValue": false,
+          "colors": [
+            "#d44a3a",
+            "rgba(237, 129, 40, 0.89)",
+            "#299c46"
+          ],
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "gridPos": {
+            "h": 2,
+            "w": 2.4,
+            "x": 12,
+            "y": 0
+          },
+          "id": 50,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "maxPerRow": 12,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "repeat": null,
+          "repeatDirection": "h",
+          "repeatIteration": 1554131201181,
+          "repeatPanelId": 25,
+          "scopedVars": {
+            "buildname": {
+              "selected": false,
+              "text": "ETLSource",
+              "value": "ETLSource"
+            }
+          },
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": true,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "azure_devops_build_latest_info{buildName=\"$buildname\"}",
+              "format": "time_series",
+              "instant": true,
+              "intervalFactor": 1,
+              "legendFormat": "{{buildNumber}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": "0.5, 0.8",
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "",
+          "transparent": true,
+          "type": "singlestat",
+          "valueFontSize": "50%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            },
+            {
+              "op": "=",
+              "text": "Failed",
+              "value": "022"
+            },
+            {
+              "op": "=",
+              "text": "Success",
+              "value": "122"
+            }
+          ],
+          "valueName": "name"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorPostfix": false,
+          "colorPrefix": false,
+          "colorValue": false,
+          "colors": [
+            "#d44a3a",
+            "rgba(237, 129, 40, 0.89)",
+            "#299c46"
+          ],
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "gridPos": {
+            "h": 2,
+            "w": 2.4,
+            "x": 14.4,
+            "y": 0
+          },
+          "id": 51,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "maxPerRow": 12,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "repeat": null,
+          "repeatDirection": "h",
+          "repeatIteration": 1554131201181,
+          "repeatPanelId": 25,
+          "scopedVars": {
+            "buildname": {
+              "selected": false,
+              "text": "Kalahari",
+              "value": "Kalahari"
+            }
+          },
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": true,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "azure_devops_build_latest_info{buildName=\"$buildname\"}",
+              "format": "time_series",
+              "instant": true,
+              "intervalFactor": 1,
+              "legendFormat": "{{buildNumber}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": "0.5, 0.8",
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "",
+          "transparent": true,
+          "type": "singlestat",
+          "valueFontSize": "50%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            },
+            {
+              "op": "=",
+              "text": "Failed",
+              "value": "022"
+            },
+            {
+              "op": "=",
+              "text": "Success",
+              "value": "122"
+            }
+          ],
+          "valueName": "name"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorPostfix": false,
+          "colorPrefix": false,
+          "colorValue": false,
+          "colors": [
+            "#d44a3a",
+            "rgba(237, 129, 40, 0.89)",
+            "#299c46"
+          ],
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "gridPos": {
+            "h": 2,
+            "w": 2.4,
+            "x": 16.8,
+            "y": 0
+          },
+          "id": 52,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "maxPerRow": 12,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "repeat": null,
+          "repeatDirection": "h",
+          "repeatIteration": 1554131201181,
+          "repeatPanelId": 25,
+          "scopedVars": {
+            "buildname": {
+              "selected": false,
+              "text": "KalahariLoadBalancer",
+              "value": "KalahariLoadBalancer"
+            }
+          },
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": true,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "azure_devops_build_latest_info{buildName=\"$buildname\"}",
+              "format": "time_series",
+              "instant": true,
+              "intervalFactor": 1,
+              "legendFormat": "{{buildNumber}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": "0.5, 0.8",
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "",
+          "transparent": true,
+          "type": "singlestat",
+          "valueFontSize": "50%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            },
+            {
+              "op": "=",
+              "text": "Failed",
+              "value": "022"
+            },
+            {
+              "op": "=",
+              "text": "Success",
+              "value": "122"
+            }
+          ],
+          "valueName": "name"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorPostfix": false,
+          "colorPrefix": false,
+          "colorValue": false,
+          "colors": [
+            "#d44a3a",
+            "rgba(237, 129, 40, 0.89)",
+            "#299c46"
+          ],
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "gridPos": {
+            "h": 2,
+            "w": 2.4,
+            "x": 19.2,
+            "y": 0
+          },
+          "id": 53,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "maxPerRow": 12,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "repeat": null,
+          "repeatDirection": "h",
+          "repeatIteration": 1554131201181,
+          "repeatPanelId": 25,
+          "scopedVars": {
+            "buildname": {
+              "selected": false,
+              "text": "Web",
+              "value": "Web"
+            }
+          },
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": true,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "azure_devops_build_latest_info{buildName=\"$buildname\"}",
+              "format": "time_series",
+              "instant": true,
+              "intervalFactor": 1,
+              "legendFormat": "{{buildNumber}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": "0.5, 0.8",
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "",
+          "transparent": true,
+          "type": "singlestat",
+          "valueFontSize": "50%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            },
+            {
+              "op": "=",
+              "text": "Failed",
+              "value": "022"
+            },
+            {
+              "op": "=",
+              "text": "Success",
+              "value": "122"
+            }
+          ],
+          "valueName": "name"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorPostfix": false,
+          "colorPrefix": false,
+          "colorValue": false,
+          "colors": [
+            "#d44a3a",
+            "rgba(237, 129, 40, 0.89)",
+            "#299c46"
+          ],
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "gridPos": {
+            "h": 2,
+            "w": 2.4,
+            "x": 21.599999999999998,
+            "y": 0
+          },
+          "id": 54,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "maxPerRow": 12,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "repeat": null,
+          "repeatDirection": "h",
+          "repeatIteration": 1554131201181,
+          "repeatPanelId": 25,
+          "scopedVars": {
+            "buildname": {
+              "selected": false,
+              "text": "WebHub",
+              "value": "WebHub"
+            }
+          },
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": true,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "azure_devops_build_latest_info{buildName=\"$buildname\"}",
+              "format": "time_series",
+              "instant": true,
+              "intervalFactor": 1,
+              "legendFormat": "{{buildNumber}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": "0.5, 0.8",
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "",
+          "transparent": true,
+          "type": "singlestat",
+          "valueFontSize": "50%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            },
+            {
+              "op": "=",
+              "text": "Failed",
+              "value": "022"
+            },
+            {
+              "op": "=",
+              "text": "Success",
+              "value": "122"
+            }
+          ],
+          "valueName": "name"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": true,
+          "colorPostfix": false,
+          "colorPrefix": false,
+          "colorValue": false,
+          "colors": [
+            "#d44a3a",
+            "rgba(237, 129, 40, 0.89)",
+            "#299c46"
+          ],
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "gridPos": {
+            "h": 2,
+            "w": 2.4,
+            "x": 0,
+            "y": 2
+          },
+          "id": 13,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "maxPerRow": 12,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "repeat": "buildname",
+          "repeatDirection": "h",
+          "scopedVars": {
+            "buildname": {
+              "selected": false,
+              "text": "Alerting",
+              "value": "Alerting"
+            }
+          },
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": true,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "sum(azure_devops_build_latest_info{result=\"succeeded\", buildName=\"$buildname\"} / azure_devops_build_latest_info{buildName=\"$buildname\"}) by (buildName, buildNumber)",
+              "format": "time_series",
+              "instant": true,
+              "intervalFactor": 1,
+              "legendFormat": "{{buildName}} {{buildNumber}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": "0.5, 0.8",
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "$buildname",
+          "type": "singlestat",
+          "valueFontSize": "50%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "Failed",
+              "value": "null"
+            },
+            {
+              "op": "=",
+              "text": "Failed",
+              "value": "0"
+            },
+            {
+              "op": "=",
+              "text": "Success",
+              "value": "1"
+            }
+          ],
+          "valueName": "current"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": true,
+          "colorPostfix": false,
+          "colorPrefix": false,
+          "colorValue": false,
+          "colors": [
+            "#d44a3a",
+            "rgba(237, 129, 40, 0.89)",
+            "#299c46"
+          ],
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "gridPos": {
+            "h": 2,
+            "w": 2.4,
+            "x": 2.4,
+            "y": 2
+          },
+          "id": 55,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "maxPerRow": 12,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "repeat": null,
+          "repeatDirection": "h",
+          "repeatIteration": 1554131201181,
+          "repeatPanelId": 13,
+          "scopedVars": {
+            "buildname": {
+              "selected": false,
+              "text": "Api",
+              "value": "Api"
+            }
+          },
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": true,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "sum(azure_devops_build_latest_info{result=\"succeeded\", buildName=\"$buildname\"} / azure_devops_build_latest_info{buildName=\"$buildname\"}) by (buildName, buildNumber)",
+              "format": "time_series",
+              "instant": true,
+              "intervalFactor": 1,
+              "legendFormat": "{{buildName}} {{buildNumber}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": "0.5, 0.8",
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "$buildname",
+          "type": "singlestat",
+          "valueFontSize": "50%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "Failed",
+              "value": "null"
+            },
+            {
+              "op": "=",
+              "text": "Failed",
+              "value": "0"
+            },
+            {
+              "op": "=",
+              "text": "Success",
+              "value": "1"
+            }
+          ],
+          "valueName": "current"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": true,
+          "colorPostfix": false,
+          "colorPrefix": false,
+          "colorValue": false,
+          "colors": [
+            "#d44a3a",
+            "rgba(237, 129, 40, 0.89)",
+            "#299c46"
+          ],
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "gridPos": {
+            "h": 2,
+            "w": 2.4,
+            "x": 4.8,
+            "y": 2
+          },
+          "id": 56,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "maxPerRow": 12,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "repeat": null,
+          "repeatDirection": "h",
+          "repeatIteration": 1554131201181,
+          "repeatPanelId": 13,
+          "scopedVars": {
+            "buildname": {
+              "selected": false,
+              "text": "ApiEtl",
+              "value": "ApiEtl"
+            }
+          },
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": true,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "sum(azure_devops_build_latest_info{result=\"succeeded\", buildName=\"$buildname\"} / azure_devops_build_latest_info{buildName=\"$buildname\"}) by (buildName, buildNumber)",
+              "format": "time_series",
+              "instant": true,
+              "intervalFactor": 1,
+              "legendFormat": "{{buildName}} {{buildNumber}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": "0.5, 0.8",
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "$buildname",
+          "type": "singlestat",
+          "valueFontSize": "50%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "Failed",
+              "value": "null"
+            },
+            {
+              "op": "=",
+              "text": "Failed",
+              "value": "0"
+            },
+            {
+              "op": "=",
+              "text": "Success",
+              "value": "1"
+            }
+          ],
+          "valueName": "current"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": true,
+          "colorPostfix": false,
+          "colorPrefix": false,
+          "colorValue": false,
+          "colors": [
+            "#d44a3a",
+            "rgba(237, 129, 40, 0.89)",
+            "#299c46"
+          ],
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "gridPos": {
+            "h": 2,
+            "w": 2.4,
+            "x": 7.199999999999999,
+            "y": 2
+          },
+          "id": 57,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "maxPerRow": 12,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "repeat": null,
+          "repeatDirection": "h",
+          "repeatIteration": 1554131201181,
+          "repeatPanelId": 13,
+          "scopedVars": {
+            "buildname": {
+              "selected": false,
+              "text": "DataExport",
+              "value": "DataExport"
+            }
+          },
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": true,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "sum(azure_devops_build_latest_info{result=\"succeeded\", buildName=\"$buildname\"} / azure_devops_build_latest_info{buildName=\"$buildname\"}) by (buildName, buildNumber)",
+              "format": "time_series",
+              "instant": true,
+              "intervalFactor": 1,
+              "legendFormat": "{{buildName}} {{buildNumber}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": "0.5, 0.8",
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "$buildname",
+          "type": "singlestat",
+          "valueFontSize": "50%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "Failed",
+              "value": "null"
+            },
+            {
+              "op": "=",
+              "text": "Failed",
+              "value": "0"
+            },
+            {
+              "op": "=",
+              "text": "Success",
+              "value": "1"
+            }
+          ],
+          "valueName": "current"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": true,
+          "colorPostfix": false,
+          "colorPrefix": false,
+          "colorValue": false,
+          "colors": [
+            "#d44a3a",
+            "rgba(237, 129, 40, 0.89)",
+            "#299c46"
+          ],
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "gridPos": {
+            "h": 2,
+            "w": 2.4,
+            "x": 9.6,
+            "y": 2
+          },
+          "id": 58,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "maxPerRow": 12,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "repeat": null,
+          "repeatDirection": "h",
+          "repeatIteration": 1554131201181,
+          "repeatPanelId": 13,
+          "scopedVars": {
+            "buildname": {
+              "selected": false,
+              "text": "ETLData",
+              "value": "ETLData"
+            }
+          },
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": true,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "sum(azure_devops_build_latest_info{result=\"succeeded\", buildName=\"$buildname\"} / azure_devops_build_latest_info{buildName=\"$buildname\"}) by (buildName, buildNumber)",
+              "format": "time_series",
+              "instant": true,
+              "intervalFactor": 1,
+              "legendFormat": "{{buildName}} {{buildNumber}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": "0.5, 0.8",
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "$buildname",
+          "type": "singlestat",
+          "valueFontSize": "50%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "Failed",
+              "value": "null"
+            },
+            {
+              "op": "=",
+              "text": "Failed",
+              "value": "0"
+            },
+            {
+              "op": "=",
+              "text": "Success",
+              "value": "1"
+            }
+          ],
+          "valueName": "current"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": true,
+          "colorPostfix": false,
+          "colorPrefix": false,
+          "colorValue": false,
+          "colors": [
+            "#d44a3a",
+            "rgba(237, 129, 40, 0.89)",
+            "#299c46"
+          ],
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "gridPos": {
+            "h": 2,
+            "w": 2.4,
+            "x": 12,
+            "y": 2
+          },
+          "id": 59,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "maxPerRow": 12,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "repeat": null,
+          "repeatDirection": "h",
+          "repeatIteration": 1554131201181,
+          "repeatPanelId": 13,
+          "scopedVars": {
+            "buildname": {
+              "selected": false,
+              "text": "ETLSource",
+              "value": "ETLSource"
+            }
+          },
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": true,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "sum(azure_devops_build_latest_info{result=\"succeeded\", buildName=\"$buildname\"} / azure_devops_build_latest_info{buildName=\"$buildname\"}) by (buildName, buildNumber)",
+              "format": "time_series",
+              "instant": true,
+              "intervalFactor": 1,
+              "legendFormat": "{{buildName}} {{buildNumber}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": "0.5, 0.8",
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "$buildname",
+          "type": "singlestat",
+          "valueFontSize": "50%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "Failed",
+              "value": "null"
+            },
+            {
+              "op": "=",
+              "text": "Failed",
+              "value": "0"
+            },
+            {
+              "op": "=",
+              "text": "Success",
+              "value": "1"
+            }
+          ],
+          "valueName": "current"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": true,
+          "colorPostfix": false,
+          "colorPrefix": false,
+          "colorValue": false,
+          "colors": [
+            "#d44a3a",
+            "rgba(237, 129, 40, 0.89)",
+            "#299c46"
+          ],
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "gridPos": {
+            "h": 2,
+            "w": 2.4,
+            "x": 14.4,
+            "y": 2
+          },
+          "id": 60,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "maxPerRow": 12,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "repeat": null,
+          "repeatDirection": "h",
+          "repeatIteration": 1554131201181,
+          "repeatPanelId": 13,
+          "scopedVars": {
+            "buildname": {
+              "selected": false,
+              "text": "Kalahari",
+              "value": "Kalahari"
+            }
+          },
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": true,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "sum(azure_devops_build_latest_info{result=\"succeeded\", buildName=\"$buildname\"} / azure_devops_build_latest_info{buildName=\"$buildname\"}) by (buildName, buildNumber)",
+              "format": "time_series",
+              "instant": true,
+              "intervalFactor": 1,
+              "legendFormat": "{{buildName}} {{buildNumber}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": "0.5, 0.8",
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "$buildname",
+          "type": "singlestat",
+          "valueFontSize": "50%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "Failed",
+              "value": "null"
+            },
+            {
+              "op": "=",
+              "text": "Failed",
+              "value": "0"
+            },
+            {
+              "op": "=",
+              "text": "Success",
+              "value": "1"
+            }
+          ],
+          "valueName": "current"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": true,
+          "colorPostfix": false,
+          "colorPrefix": false,
+          "colorValue": false,
+          "colors": [
+            "#d44a3a",
+            "rgba(237, 129, 40, 0.89)",
+            "#299c46"
+          ],
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "gridPos": {
+            "h": 2,
+            "w": 2.4,
+            "x": 16.8,
+            "y": 2
+          },
+          "id": 61,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "maxPerRow": 12,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "repeat": null,
+          "repeatDirection": "h",
+          "repeatIteration": 1554131201181,
+          "repeatPanelId": 13,
+          "scopedVars": {
+            "buildname": {
+              "selected": false,
+              "text": "KalahariLoadBalancer",
+              "value": "KalahariLoadBalancer"
+            }
+          },
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": true,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "sum(azure_devops_build_latest_info{result=\"succeeded\", buildName=\"$buildname\"} / azure_devops_build_latest_info{buildName=\"$buildname\"}) by (buildName, buildNumber)",
+              "format": "time_series",
+              "instant": true,
+              "intervalFactor": 1,
+              "legendFormat": "{{buildName}} {{buildNumber}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": "0.5, 0.8",
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "$buildname",
+          "type": "singlestat",
+          "valueFontSize": "50%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "Failed",
+              "value": "null"
+            },
+            {
+              "op": "=",
+              "text": "Failed",
+              "value": "0"
+            },
+            {
+              "op": "=",
+              "text": "Success",
+              "value": "1"
+            }
+          ],
+          "valueName": "current"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": true,
+          "colorPostfix": false,
+          "colorPrefix": false,
+          "colorValue": false,
+          "colors": [
+            "#d44a3a",
+            "rgba(237, 129, 40, 0.89)",
+            "#299c46"
+          ],
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "gridPos": {
+            "h": 2,
+            "w": 2.4,
+            "x": 19.2,
+            "y": 2
+          },
+          "id": 62,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "maxPerRow": 12,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "repeat": null,
+          "repeatDirection": "h",
+          "repeatIteration": 1554131201181,
+          "repeatPanelId": 13,
+          "scopedVars": {
+            "buildname": {
+              "selected": false,
+              "text": "Web",
+              "value": "Web"
+            }
+          },
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": true,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "sum(azure_devops_build_latest_info{result=\"succeeded\", buildName=\"$buildname\"} / azure_devops_build_latest_info{buildName=\"$buildname\"}) by (buildName, buildNumber)",
+              "format": "time_series",
+              "instant": true,
+              "intervalFactor": 1,
+              "legendFormat": "{{buildName}} {{buildNumber}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": "0.5, 0.8",
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "$buildname",
+          "type": "singlestat",
+          "valueFontSize": "50%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "Failed",
+              "value": "null"
+            },
+            {
+              "op": "=",
+              "text": "Failed",
+              "value": "0"
+            },
+            {
+              "op": "=",
+              "text": "Success",
+              "value": "1"
+            }
+          ],
+          "valueName": "current"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": true,
+          "colorPostfix": false,
+          "colorPrefix": false,
+          "colorValue": false,
+          "colors": [
+            "#d44a3a",
+            "rgba(237, 129, 40, 0.89)",
+            "#299c46"
+          ],
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "gridPos": {
+            "h": 2,
+            "w": 2.4,
+            "x": 21.599999999999998,
+            "y": 2
+          },
+          "id": 63,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "maxPerRow": 12,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "repeat": null,
+          "repeatDirection": "h",
+          "repeatIteration": 1554131201181,
+          "repeatPanelId": 13,
+          "scopedVars": {
+            "buildname": {
+              "selected": false,
+              "text": "WebHub",
+              "value": "WebHub"
+            }
+          },
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": true,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "sum(azure_devops_build_latest_info{result=\"succeeded\", buildName=\"$buildname\"} / azure_devops_build_latest_info{buildName=\"$buildname\"}) by (buildName, buildNumber)",
+              "format": "time_series",
+              "instant": true,
+              "intervalFactor": 1,
+              "legendFormat": "{{buildName}} {{buildNumber}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": "0.5, 0.8",
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "$buildname",
+          "type": "singlestat",
+          "valueFontSize": "50%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "Failed",
+              "value": "null"
+            },
+            {
+              "op": "=",
+              "text": "Failed",
+              "value": "0"
+            },
+            {
+              "op": "=",
+              "text": "Success",
+              "value": "1"
+            }
+          ],
+          "valueName": "current"
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "fill": 1,
+          "gridPos": {
+            "h": 4,
+            "w": 24,
+            "x": 0,
+            "y": 4
+          },
+          "id": 4,
+          "legend": {
+            "alignAsTable": false,
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "sideWidth": 130,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "paceLength": 10,
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(ceil((rate(azure_devops_stats_agentpool_builds[2m])*100))) by (result)",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "{{result}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Current Builds",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "decimals": 0,
+              "format": "short",
+              "label": "",
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "Azure Monitor",
+          "fill": 5,
+          "gridPos": {
+            "h": 4,
+            "w": 24,
+            "x": 0,
+            "y": 8
+          },
+          "id": 45,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "sideWidth": 100,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 2,
+          "nullPointMode": "null",
+          "paceLength": 10,
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [
+            {
+              "alias": "Network Out",
+              "transform": "negative-Y"
+            },
+            {
+              "alias": "Network In",
+              "yaxis": 2
+            },
+            {
+              "alias": "Network Out",
+              "yaxis": 2
+            }
+          ],
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "appInsights": {
+                "groupBy": "none",
+                "metricName": "select",
+                "rawQuery": false,
+                "rawQueryString": "",
+                "spliton": "",
+                "timeGrainType": "auto",
+                "xaxis": "timestamp",
+                "yaxis": ""
+              },
+              "azureLogAnalytics": {
+                "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
+                "resultFormat": "time_series"
+              },
+              "azureMonitor": {
+                "aggOptions": [
+                  "None",
+                  "Average",
+                  "Minimum",
+                  "Maximum",
+                  "Total",
+                  "Count"
+                ],
+                "aggregation": "Average",
+                "alias": "Percentage CPU",
+                "dimension": "",
+                "dimensionFilter": "*",
+                "dimensions": [],
+                "metricDefinition": "Microsoft.Compute/virtualMachines",
+                "metricName": "Percentage CPU",
+                "resourceGroup": "deployment",
+                "resourceName": "deployment-ubuntu",
+                "timeGrain": "auto",
+                "timeGrains": [
+                  {
+                    "text": "auto",
+                    "value": "auto"
+                  },
+                  {
+                    "text": "1 minute",
+                    "value": "PT1M"
+                  },
+                  {
+                    "text": "5 minutes",
+                    "value": "PT5M"
+                  },
+                  {
+                    "text": "15 minutes",
+                    "value": "PT15M"
+                  },
+                  {
+                    "text": "30 minutes",
+                    "value": "PT30M"
+                  },
+                  {
+                    "text": "1 hour",
+                    "value": "PT1H"
+                  },
+                  {
+                    "text": "6 hours",
+                    "value": "PT6H"
+                  },
+                  {
+                    "text": "12 hours",
+                    "value": "PT12H"
+                  },
+                  {
+                    "text": "1 day",
+                    "value": "P1D"
+                  }
+                ]
+              },
+              "hide": true,
+              "queryType": "Azure Monitor",
+              "refId": "A"
+            },
+            {
+              "appInsights": {
+                "groupBy": "none",
+                "metricName": "select",
+                "rawQuery": false,
+                "rawQueryString": "",
+                "spliton": "",
+                "timeGrainType": "auto",
+                "xaxis": "timestamp",
+                "yaxis": ""
+              },
+              "azureLogAnalytics": {
+                "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
+                "resultFormat": "time_series"
+              },
+              "azureMonitor": {
+                "aggOptions": [
+                  "None",
+                  "Average",
+                  "Minimum",
+                  "Maximum",
+                  "Total",
+                  "Count"
+                ],
+                "aggregation": "Total",
+                "alias": "Network In",
+                "dimension": "",
+                "dimensionFilter": "*",
+                "dimensions": [],
+                "metricDefinition": "Microsoft.Compute/virtualMachines",
+                "metricName": "Network In Total",
+                "resourceGroup": "deployment",
+                "resourceName": "deployment-ubuntu",
+                "timeGrain": "auto",
+                "timeGrains": [
+                  {
+                    "text": "auto",
+                    "value": "auto"
+                  },
+                  {
+                    "text": "1 minute",
+                    "value": "PT1M"
+                  },
+                  {
+                    "text": "5 minutes",
+                    "value": "PT5M"
+                  },
+                  {
+                    "text": "15 minutes",
+                    "value": "PT15M"
+                  },
+                  {
+                    "text": "30 minutes",
+                    "value": "PT30M"
+                  },
+                  {
+                    "text": "1 hour",
+                    "value": "PT1H"
+                  },
+                  {
+                    "text": "6 hours",
+                    "value": "PT6H"
+                  },
+                  {
+                    "text": "12 hours",
+                    "value": "PT12H"
+                  },
+                  {
+                    "text": "1 day",
+                    "value": "P1D"
+                  }
+                ]
+              },
+              "queryType": "Azure Monitor",
+              "refId": "B"
+            },
+            {
+              "appInsights": {
+                "groupBy": "none",
+                "metricName": "select",
+                "rawQuery": false,
+                "rawQueryString": "",
+                "spliton": "",
+                "timeGrainType": "auto",
+                "xaxis": "timestamp",
+                "yaxis": ""
+              },
+              "azureLogAnalytics": {
+                "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
+                "resultFormat": "time_series"
+              },
+              "azureMonitor": {
+                "aggOptions": [
+                  "None",
+                  "Average",
+                  "Minimum",
+                  "Maximum",
+                  "Total",
+                  "Count"
+                ],
+                "aggregation": "Total",
+                "alias": "Network Out",
+                "dimension": "",
+                "dimensionFilter": "*",
+                "dimensions": [],
+                "metricDefinition": "Microsoft.Compute/virtualMachines",
+                "metricName": "Network Out Total",
+                "resourceGroup": "deployment",
+                "resourceName": "deployment-ubuntu",
+                "timeGrain": "auto",
+                "timeGrains": [
+                  {
+                    "text": "auto",
+                    "value": "auto"
+                  },
+                  {
+                    "text": "1 minute",
+                    "value": "PT1M"
+                  },
+                  {
+                    "text": "5 minutes",
+                    "value": "PT5M"
+                  },
+                  {
+                    "text": "15 minutes",
+                    "value": "PT15M"
+                  },
+                  {
+                    "text": "30 minutes",
+                    "value": "PT30M"
+                  },
+                  {
+                    "text": "1 hour",
+                    "value": "PT1H"
+                  },
+                  {
+                    "text": "6 hours",
+                    "value": "PT6H"
+                  },
+                  {
+                    "text": "12 hours",
+                    "value": "PT12H"
+                  },
+                  {
+                    "text": "1 day",
+                    "value": "P1D"
+                  }
+                ]
+              },
+              "queryType": "Azure Monitor",
+              "refId": "C"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Panel Title",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "decbytes",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            },
+            {
+              "format": "decbytes",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "cacheTimeout": null,
+          "dashLength": 10,
+          "dashes": false,
+          "fill": 0,
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 12
+          },
+          "id": 2,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "hideEmpty": false,
+            "hideZero": false,
+            "max": false,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null",
+          "paceLength": 10,
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "avg(\n  azure_devops_build_status{type=\"jobDuration\"}\n    + on(buildID) group_left(buildName, result) (0 *azure_devops_build_info{result=\"succeeded\"})\n) by (buildName) > 0",
+              "format": "time_series",
+              "instant": false,
+              "intervalFactor": 1,
+              "legendFormat": "{{buildName}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Build time average",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "s",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "decimals": 0,
+          "fill": 0,
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 12
+          },
+          "id": 6,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": false,
+            "hideZero": false,
+            "max": false,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null",
+          "paceLength": 10,
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "count(azure_devops_build_info{result!=\"succeeded\"}) by (buildName) / count(azure_devops_build_info) by (buildName)",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "{{ buildName }}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Build success rate",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "decimals": 0,
+              "format": "percentunit",
+              "label": "success rate",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        }
+      ],
+      "refresh": false,
+      "schemaVersion": 18,
+      "style": "dark",
+      "tags": [],
+      "templating": {
+        "list": [
+          {
+            "allValue": null,
+            "current": {
+              "selected": true,
+              "text": "All",
+              "value": "$__all"
+            },
+            "datasource": "Prometheus",
+            "definition": "azure_devops_build_definition_info",
+            "hide": 0,
+            "includeAll": true,
+            "label": null,
+            "multi": true,
+            "name": "buildname",
+            "options": [
+              {
+                "selected": true,
+                "text": "All",
+                "value": "$__all"
+              },
+              {
+                "selected": false,
+                "text": "Alerting",
+                "value": "Alerting"
+              },
+              {
+                "selected": false,
+                "text": "Api",
+                "value": "Api"
+              },
+              {
+                "selected": false,
+                "text": "ApiEtl",
+                "value": "ApiEtl"
+              },
+              {
+                "selected": false,
+                "text": "DataExport",
+                "value": "DataExport"
+              },
+              {
+                "selected": false,
+                "text": "ETLData",
+                "value": "ETLData"
+              },
+              {
+                "selected": false,
+                "text": "ETLSource",
+                "value": "ETLSource"
+              },
+              {
+                "selected": false,
+                "text": "Kalahari",
+                "value": "Kalahari"
+              },
+              {
+                "selected": false,
+                "text": "KalahariLoadBalancer",
+                "value": "KalahariLoadBalancer"
+              },
+              {
+                "selected": false,
+                "text": "Web",
+                "value": "Web"
+              },
+              {
+                "selected": false,
+                "text": "WebHub",
+                "value": "WebHub"
+              }
+            ],
+            "query": "azure_devops_build_definition_info",
+            "refresh": 0,
+            "regex": "/.*buildDefinitionName=\"(.*)\",endpoint.*/",
+            "skipUrlSync": false,
+            "sort": 1,
+            "tagValuesQuery": "",
+            "tags": [],
+            "tagsQuery": "",
+            "type": "query",
+            "useTags": false
+          }
+        ]
+      },
+      "time": {
+        "from": "now-6h",
+        "to": "now"
+      },
+      "timepicker": {
+        "refresh_intervals": [
+          "5s",
+          "10s",
+          "30s",
+          "1m",
+          "5m",
+          "15m",
+          "30m",
+          "1h",
+          "2h",
+          "1d"
+        ],
+        "time_options": [
+          "5m",
+          "15m",
+          "1h",
+          "6h",
+          "12h",
+          "24h",
+          "2d",
+          "7d",
+          "30d"
+        ]
+      },
+      "timezone": "",
+      "title": "devops-monitoring",
+      "uid": "eA3tPI6iz",
+      "version": 10
+    }

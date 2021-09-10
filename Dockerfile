@@ -1,4 +1,4 @@
-FROM golang:1.16 as build
+FROM golang:1.17 as build
 
 WORKDIR /go/src/github.com/webdevops/azure-devops-exporter
 
@@ -25,6 +25,6 @@ FROM ubuntu
 COPY --from=build /etc/ssl/certs /etc/ssl/certs
 ENV LOG_JSON=1
 COPY --from=build /go/src/github.com/webdevops/azure-devops-exporter/azure-devops-exporter /
-USER 1000
+USER 1000:1000
 #CMD ["/bin/sh"]
 ENTRYPOINT ["/azure-devops-exporter"]

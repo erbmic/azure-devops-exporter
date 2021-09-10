@@ -98,6 +98,21 @@ func initArgparser() {
 		})
 	}
 
+	// load accesstoken from file
+	if opts.AzureDevops.AccessTokenFile != nil && len(*opts.AzureDevops.AccessTokenFile) > 0 {
+		log.Infof("reading access token from file \"%s\"", *opts.AzureDevops.AccessTokenFile)
+		// load access token from file
+		if val, err := os.ReadFile(*opts.AzureDevops.AccessTokenFile); err == nil {
+			opts.AzureDevops.AccessToken = strings.TrimSpace(string(val))
+		} else {
+			log.Panicf("unable to read access token file \"%s\": %v", *opts.AzureDevops.AccessTokenFile, err)
+		}
+	}
+
+	if len(opts.AzureDevops.AccessToken) == 0 {
+		log.Panicf("no Azure DevOps access token specified")
+	}
+
 	// ensure query paths and projects are splitted by '@'
 	if opts.AzureDevops.QueriesWithProjects != nil {
 		queryError := false
@@ -151,6 +166,10 @@ func initArgparser() {
 
 	if opts.Scrape.TimeQuery == nil {
 		opts.Scrape.TimeQuery = &opts.Scrape.Time
+	}
+
+	if v := os.Getenv("AZURE_DEVOPS_FILTER_AGENTPOOL"); v != "" {
+		log.Panic("deprecated env var AZURE_DEVOPS_FILTER_AGENTPOOL detected, please use AZURE_DEVOPS_AGENTPOOL")
 	}
 }
 
@@ -248,7 +267,7 @@ func initMetricCollector() {
 	if opts.Scrape.TimeLive.Seconds() > 0 {
 		collectorAgentPoolList[collectorName] = NewCollectorAgentPool(collectorName, &MetricsCollectorAgentPool{})
 		collectorAgentPoolList[collectorName].SetAzureProjects(&projectList)
-		collectorAgentPoolList[collectorName].AgentPoolIdList = opts.AzureDevops.FilterAgentPoolId
+		collectorAgentPoolList[collectorName].AgentPoolIdList = opts.AzureDevops.AgentPoolIdList
 		collectorAgentPoolList[collectorName].SetScrapeTime(*opts.Scrape.TimeLive)
 	} else {
 		log.Infof("collector[%s]: disabled", collectorName)

@@ -31,9 +31,10 @@ services:
      #- C:\Users\ERMI2\.monitoring.env
      - .env
    environment:
-     - AZURE_DEVOPS_URL=https://azdo.corp.itsroot.biz
-     - AZURE_DEVOPS_ACCESS_TOKEN=${AZDO_API_KEY}
-     - AZURE_DEVOPS_ORGANISATION=ypsomed
+    #  - AZURE_DEVOPS_URL=https://azdo.corp.itsroot.biz
+    #  - AZURE_DEVOPS_ACCESS_TOKEN=${AZDO_API_KEY}
+     - AZURE_DEVOPS_ACCESS_TOKEN=zj6cb22agofaxh2syjeg6aaxz7c3w6ao35vehlsmdfxg5hgjvq6q
+     - AZURE_DEVOPS_ORGANISATION=michaelerb
      #- AZURE_DEVOPS_FILTER_AGENTPOOL=2
     #  - AZURE_DEVOPS_FILTER_AGENTPOOL=5
     #  - AZURE_DEVOPS_FILTER_AGENTPOOL=3

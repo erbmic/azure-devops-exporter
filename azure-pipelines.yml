@@ -12,11 +12,16 @@ resources:
 - repo: self
 
 variables:
-  version: 1.0.0
-  onMain: $[eq(variables['Build.SourceBranch'], 'main')]
-  onRelease: $[startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')]
-  dockerReleaseRegistryName: michaelerb
-  tag: '$(Build.BuildId)'
+- name: version
+  value: 1.0.0
+- name: onMain
+  value: $[eq(variables['Build.SourceBranch'], 'main')]
+- name: onRelease
+  value: $[startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')]
+- name: dockerReleaseRegistryName
+  value: michaelerb
+- name: tag
+  value: '$(Build.BuildId)'
 - group: docker_hub_credentials
 
 stages:

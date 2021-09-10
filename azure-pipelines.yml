@@ -96,14 +96,19 @@ stages:
     #     tags: |
     #       $(tag)
     - task: Docker@2
-      displayName: 'Build Docker image'
+      displayName: Login to Docker Hub
       inputs:
-        command: build
-        repository: michaelerb
-        tags: tag-x
-        arguments: --no-cache
-        imageName: 'michaelerb/azure-devops-exporter:0.x'
-        dockerFile: '$(Build.SourcesDirectory)/Dockerfile'
+        command: login
+        containerRegistry: michaelerb
+    # - task: Docker@2
+    #   displayName: 'Build Docker image'
+    #   inputs:
+    #     command: build
+    #     repository: michaelerb
+    #     tags: tag-x
+    #     arguments: --no-cache
+    #     imageName: 'michaelerb/azure-devops-exporter:0.x'
+    #     dockerFile: '$(Build.SourcesDirectory)/Dockerfile'
     # - bash: |
     #     # determine tag
     #     tag=$(version)"-"$(Build.BuildNumber)

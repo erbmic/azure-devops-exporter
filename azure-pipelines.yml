@@ -48,7 +48,7 @@ stages:
         registryHost=$(dockerReleaseRegistryName)
 
         # build
-        imageName=$dockerReleaseRegistryName"/"app-name":"$tag
+        imageName=$registryHost"/"$app-name":"$tag
         echo $imageName
         docker build --no-cache -t $imageName .
 

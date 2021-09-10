@@ -12,8 +12,8 @@ resources:
 - repo: self
 
 variables:
-- name: appname
-  value: "azure-devops-exporter"
+- name: testerx
+  value: azure-devops-exporter
 - name: version
   value: 1.0.0
 - name: onMain
@@ -48,7 +48,7 @@ stages:
         registryHost=$(dockerReleaseRegistryName)
 
         # build
-        imageName=$registryHost"/"$appname":"$tag
+        imageName=$registryHost"/"$testerx":"$tag
         echo $imageName
         docker build --no-cache -t $imageName .
 

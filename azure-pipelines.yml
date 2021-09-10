@@ -30,5 +30,3 @@ stages:
           $(tag)
     - bash: |
       echo $tag
-    failOnStderr: false
-    continueOnError: true

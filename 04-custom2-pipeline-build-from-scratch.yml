@@ -53,13 +53,24 @@ stages:
     # Target Directory: $(Build.ArtifactStagingDirectory)
     - task: CopyFiles@2
       inputs:
-        SourceFolder: '$(System.DefaultWorkingDirectory)/kube-manifests'
+        SourceFolder: '$(System.DefaultWorkingDirectory)/k8s-manifest'
         Contents: '**'
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
         OverWrite: true
     # List files from Build Artifact Staging Directory - After Copy
-    - bash: echo After copying to Build Artifact Directory; ls -R $(System.DefaultWorkingDirectory)  
+    - bash: echo After copying to Build Artifact Directory; ls -R $(Build.ArtifactStagingDirectory)  
     # Task-3: Publish build artifacts (Publish build to Azure Pipelines)           
-
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'kube-manifests'
+        publishLocation: 'Container'
+    - task: KubernetesManifest@0
+      inputs:
+        action: 'deploy'
+        kubernetesServiceConnection: 'aks_monitoring'
+        namespace: 'do'
+        manifests: 'azure-exporter-deployment.yaml'
+    
     
     

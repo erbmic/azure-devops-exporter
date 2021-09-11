@@ -36,10 +36,7 @@ stages:
     - task: Docker@2
       inputs:
         containerRegistry: 'docker_registry'
-        command: 'login'
-    - bash: |
-        echo $(dh_credentials.password) | docker login --username $(dh_credentials.username) --password-stdin
-    
+        command: 'login'    
     - task: Docker@2
       inputs:
         containerRegistry: 'docker_registry'
@@ -47,4 +44,6 @@ stages:
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile'
         tags: |
-          1.3.0
+          $(tag)
+          $(Build.SourceVersion)
+

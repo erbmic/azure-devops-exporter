@@ -43,7 +43,7 @@ stages:
     - task: Docker@2
       inputs:
         containerRegistry: 'docker_registry'
-        repository: 'azure-devops-exporter'
+        repository: 'michaelerb/azure-devops-exporter'
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile'
         tags: |

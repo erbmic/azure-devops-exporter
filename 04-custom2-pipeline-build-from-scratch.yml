@@ -70,7 +70,7 @@ stages:
         action: 'deploy'
         kubernetesServiceConnection: 'aks_monitoring'
         namespace: 'do'
-        manifests: 'azure-exporter-deployment.yaml'
+        manifests: '$(Build.ArtifactStagingDirectory)/azure-exporter-deployment.yaml'
     
     
     

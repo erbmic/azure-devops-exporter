@@ -60,22 +60,6 @@ stages:
     # List files from Build Artifact Staging Directory - After Copy
     - bash: echo After copying to Build Artifact Directory; ls -R $(Build.ArtifactStagingDirectory)  
     # Task-3: Publish build artifacts (Publish build to Azure Pipelines)
-    - task: PublishBuildArtifacts@1
-      inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        ArtifactName: 'kube-manifests'
-        publishLocation: 'Container'
-    - task: KubernetesManifest@0
-      inputs:
-        action: 'deploy'
-        kubernetesServiceConnection: 'aks_monitoring'
-        namespace: 'do'
-        manifests: '$(Build.ArtifactStagingDirectory)/azure-exporter-deployment.yaml'
-    - task: KubernetesManifest@0
-      inputs:
-        action: 'deploy'
-        kubernetesServiceConnection: 'aks_monitoring'
-        manifests: '''$(Build.ArtifactStagingDirectory)'''
     - task: KubernetesManifest@0
       inputs:
         action: 'deploy'

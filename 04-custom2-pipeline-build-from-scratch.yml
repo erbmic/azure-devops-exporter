@@ -10,20 +10,20 @@ resources:
 
 # Variables
 variables:
-#  tag: '$(Build.BuildId)'
-- name: testerx
-  value: azure-devops-exporter
-- name: version
-  value: 1.0.0
-- name: onMain
-  value: $[eq(variables['Build.SourceBranch'], 'main')]
-- name: onRelease
-  value: $[startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')]
-- name: dockerReleaseRegistryName
-  value: michaelerb
-- name: tag
-  value: '$(Build.BuildId)'
-- group: docker_hub_credentials
+  tag: '$(Build.BuildId)'
+# - name: testerx
+#   value: azure-devops-exporter
+# - name: version
+#   value: 1.0.0
+# - name: onMain
+#   value: $[eq(variables['Build.SourceBranch'], 'main')]
+# - name: onRelease
+#   value: $[startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')]
+# - name: dockerReleaseRegistryName
+#   value: michaelerb
+# - name: tag
+#   value: '$(Build.BuildId)'
+# - group: docker_hub_credentials
 
 
 stages:
@@ -59,7 +59,7 @@ stages:
 #     # Target Directory: $(Build.ArtifactStagingDirectory)
 #     - task: CopyFiles@2
 #       inputs:
-#         SourceFolder: '$(System.DefaultWorkingDirectory)/k8s-manifest'
+#         SourceFolder: '$(System.DefaultWorkingDirectory)/manifests'
 #         Contents: '**'
 #         TargetFolder: '$(Build.ArtifactStagingDirectory)'
 #         OverWrite: true
@@ -72,7 +72,7 @@ stages:
     #     action: 'deploy'
     #     kubernetesServiceConnection: 'aks_monitoring'
     #     namespace: 'do'
-    #     manifests: '$(Pipeline.Workspace)/manifests/k8s-manifest/azure-devops-exporter.yaml'
+    #     manifests: '$(Pipeline.Workspace)/manifests/azure-devops-exporter.yaml'
 
 
 
@@ -104,7 +104,7 @@ stages:
               kubernetesServiceConnection: aks_monitoring
               action: deploy
               manifests: |
-                $(Pipeline.Workspace)/k8s-manifest/azure-exporter-deployment.yaml
+                $(Pipeline.Workspace)/manifests/azure-exporter-deployment.yaml
               containers: |
                 michaelerb/azure-devops-exporter:$(tag)
 

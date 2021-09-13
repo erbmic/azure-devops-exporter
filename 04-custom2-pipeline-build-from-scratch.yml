@@ -102,7 +102,7 @@ stages:
               action: 'createSecret'
               kubernetesServiceConnection: 'k8s_env-monitoring-do-1631549407952'
               secretType: 'dockerRegistry'
-              secretName: 'aks_secret'
+              secretName: 'docker-reg'
               dockerRegistryEndpoint: 'docker_registry'
           
           - task: KubernetesManifest@0

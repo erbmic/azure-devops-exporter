@@ -111,6 +111,7 @@ stages:
               action: createSecret
               secretName: $(imagePullSecret)
               secretType: 'dockerRegistry'
+              kubernetesServiceConnection: 'aks_monitoring'
               dockerRegistryEndpoint: 'docker_registry'
           - bash: echo $(tag)
           - task: KubernetesManifest@0

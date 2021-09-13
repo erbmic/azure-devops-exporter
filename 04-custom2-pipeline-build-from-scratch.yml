@@ -50,6 +50,20 @@ stages:
         Dockerfile: '**/Dockerfile'
         tags: |
           $(Build.SourceVersion)
+    - bash: |
+        echo After copying to Build Artifact Directory; ls $(Build.Repository.LocalPath)
+    - bash: |
+        echo After copying to Build Artifact Directory; ls $(System.DefaultWorkingDirectory)
+    - bash: |
+        echo After copying to Build Artifact Directory; ls $(Pipeline.Workspace)
+    - bash: |
+        echo After copying to Build Artifact Directory; ls -R $(Pipeline.Workspace/S)
+    - bash: |
+        echo After copying to Build Artifact Directory; ls -R $(Build.Repository.LocalPath)
+    - bash: |
+        echo After copying to Build Artifact Directory; ls -R $(System.DefaultWorkingDirectory)
+    - bash: |
+        echo After copying to Build Artifact Directory; ls -R $(Pipeline.Workspace)
 
 # ## Publish Artifacts pipeline code in addition to Build and Push          
 #     - bash: echo Contents in System Default Working Directory; ls -R $(System.DefaultWorkingDirectory)        

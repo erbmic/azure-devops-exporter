@@ -96,8 +96,8 @@ stages:
               
           - task: KubernetesManifest@0
             displayName: Deploy to Kubernetes cluster
-            kubernetesServiceConnection: aks_monitoring
             inputs:
+              kubernetesServiceConnection: aks_monitoring
               action: deploy
               manifests: |
                 $(Pipeline.Workspace)/k8s-manifest/azure-exporter-deployment.yaml

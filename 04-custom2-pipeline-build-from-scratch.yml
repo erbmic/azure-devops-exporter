@@ -82,6 +82,7 @@ stages:
     displayName: Deploy
     pool:
       vmImage: 'ubuntu-latest'
+    environment: do
     strategy:
       runOnce:
         deploy:

@@ -55,7 +55,6 @@ spec:
       - name: azure-exporter
         image: michaelerb/azure-devops-exporter_azure-exporter
         imagePullPolicy: IfNotPresent
-        imagePullPolicy: ""
         ports:
         - containerPort: 8080
         env:

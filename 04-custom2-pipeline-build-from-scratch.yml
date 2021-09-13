@@ -34,10 +34,12 @@ stages:
       vmImage: 'ubuntu-latest'
     steps:
     - task: Docker@2
+      displayName: Login to docker registry
       inputs:
         containerRegistry: 'docker_registry'
         command: 'login'    
     - task: Docker@2
+      displayName: Build and push an image to container registry
       inputs:
         containerRegistry: 'docker_registry'
         repository: 'michaelerb/azure-devops-exporter'
@@ -45,30 +47,62 @@ stages:
         Dockerfile: '**/Dockerfile'
         tags: |
           $(Build.SourceVersion)
-## Publish Artifacts pipeline code in addition to Build and Push          
-    - bash: echo Contents in System Default Working Directory; ls -R $(System.DefaultWorkingDirectory)        
-    - bash: echo Before copying Contents in Build Artifact Directory; ls -R $(Build.ArtifactStagingDirectory)        
-    # Task-2: Copy files (Copy files from a source folder to target folder)
-    # Source Directory: $(System.DefaultWorkingDirectory)/kube-manifests
-    # Target Directory: $(Build.ArtifactStagingDirectory)
-    - task: CopyFiles@2
-      inputs:
-        SourceFolder: '$(System.DefaultWorkingDirectory)/k8s-manifest'
-        Contents: '**'
-        TargetFolder: '$(Build.ArtifactStagingDirectory)'
-        OverWrite: true
-    # List files from Build Artifact Staging Directory - After Copy
-    - bash: echo After copying to Build Artifact Directory; ls -R $(Build.ArtifactStagingDirectory)  
-    # Task-3: Publish build artifacts (Publish build to Azure Pipelines)
-    - bash:
-        echo; ls -R $(Pipeline.Workspace)
-    - task: KubernetesManifest@0
-      inputs:
-        action: 'deploy'
-        kubernetesServiceConnection: 'aks_monitoring'
-        namespace: 'do'
-        manifests: '$(Pipeline.Workspace)/manifests/k8s-manifest/azure-devops-exporter.yaml'
-    
+
+# ## Publish Artifacts pipeline code in addition to Build and Push          
+#     - bash: echo Contents in System Default Working Directory; ls -R $(System.DefaultWorkingDirectory)        
+#     - bash: echo Before copying Contents in Build Artifact Directory; ls -R $(Build.ArtifactStagingDirectory)        
+#     # Task-2: Copy files (Copy files from a source folder to target folder)
+#     # Source Directory: $(System.DefaultWorkingDirectory)/kube-manifests
+#     # Target Directory: $(Build.ArtifactStagingDirectory)
+#     - task: CopyFiles@2
+#       inputs:
+#         SourceFolder: '$(System.DefaultWorkingDirectory)/k8s-manifest'
+#         Contents: '**'
+#         TargetFolder: '$(Build.ArtifactStagingDirectory)'
+#         OverWrite: true
+#     # List files from Build Artifact Staging Directory - After Copy
+#     - bash: echo After copying to Build Artifact Directory; ls -R $(Build.ArtifactStagingDirectory)  
+#     # Task-3: Publish build artifacts (Publish build to Azure Pipelines)
+
+    # - task: KubernetesManifest@0
+    #   inputs:
+    #     action: 'deploy'
+    #     kubernetesServiceConnection: 'aks_monitoring'
+    #     namespace: 'do'
+    #     manifests: '$(Pipeline.Workspace)/manifests/k8s-manifest/azure-devops-exporter.yaml'
+
+
+
+- stage: Deploy
+  displayName: Deploy stage
+  dependsOn: Build
+
+  jobs:
+  - deployment: Deploy
+    displayName: Deploy
+    pool:
+      vmImage: 'ubuntu-latest'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          # - task: KubernetesManifest@0
+          #   displayName: Create imagePullSecret
+          #   inputs:
+          #     action: createSecret
+          #     secretName: $(imagePullSecret)
+          #     dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
+              
+          - task: KubernetesManifest@0
+            displayName: Deploy to Kubernetes cluster
+            inputs:
+              action: deploy
+              manifests: |
+                $(Pipeline.Workspace)/k8s-manifest/azure-exporter-deployment.yaml
+              containers: |
+                michaelerb/azure-devops-exporter:$(tag)
+
+
     
     
     

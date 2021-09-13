@@ -93,7 +93,8 @@ stages:
           #     action: createSecret
           #     secretName: $(imagePullSecret)
           #     dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
-              
+          - bash: |
+              echo After copying to Build Artifact Directory; ls $(Pipeline.Workspace)      
           - task: KubernetesManifest@0
             displayName: Deploy to Kubernetes cluster
             inputs:

@@ -52,15 +52,7 @@ stages:
       inputs:
         containerRegistry: 'docker_registry'
         command: 'login'    
-    - task: Docker@2
-      displayName: Build and push an image to container registry
-      inputs:
-        containerRegistry: 'docker_registry'
-        repository: 'michaelerb/azure-devops-exporter'
-        command: 'buildAndPush'
-        Dockerfile: '**/Dockerfile'
-        tags: |
-          $(Build.SourceVersion)
+
 
     - upload: manifests
       artifact: manifests

@@ -108,6 +108,7 @@ stages:
           - task: KubernetesManifest@0
             displayName: Deploy to Kubernetes cluster
             inputs:
+              imagePullSecrets: docker-reg
               kubernetesServiceConnection: aks_serviceconnection
               action: deploy
               manifests: |

@@ -17,7 +17,7 @@ variables:
   # containerRegistry: 'aksdevopsacr.azurecr.io'
   # dockerfilePath: '**/Dockerfile'
   tag: '$(Build.BuildId)'
-  imagePullSecret: 'aksdevopsacr1755e8d5-auth'
+  imagePullSecret: 'docker-reg'
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'

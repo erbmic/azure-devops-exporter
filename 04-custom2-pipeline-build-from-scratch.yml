@@ -114,9 +114,4 @@ stages:
               manifests: |
                 $(Pipeline.Workspace)/manifests/azure-exporter-deployment.yaml
               containers: |
-                michaelerb/azure-devops-exporter
-
-
-    
-    
-    
+                michaelerb/azure-devops-exporter_azure-exporter

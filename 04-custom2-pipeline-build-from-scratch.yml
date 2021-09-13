@@ -50,20 +50,10 @@ stages:
         Dockerfile: '**/Dockerfile'
         tags: |
           $(Build.SourceVersion)
-    - bash: |
-        echo After copying to Build Artifact Directory; ls $(Build.Repository.LocalPath)
-    - bash: |
-        echo After copying to Build Artifact Directory; ls $(System.DefaultWorkingDirectory)
-    - bash: |
-        echo After copying to Build Artifact Directory; ls $(Pipeline.Workspace)
-    - bash: |
-        echo After copying to Build Artifact Directory; ls -R $(Pipeline.Workspace/S)
-    - bash: |
-        echo After copying to Build Artifact Directory; ls -R $(Build.Repository.LocalPath)
-    - bash: |
-        echo After copying to Build Artifact Directory; ls -R $(System.DefaultWorkingDirectory)
-    - bash: |
-        echo After copying to Build Artifact Directory; ls -R $(Pipeline.Workspace)
+
+    - upload: manifests
+      artifact: manifests
+
 
 # ## Publish Artifacts pipeline code in addition to Build and Push          
 #     - bash: echo Contents in System Default Working Directory; ls -R $(System.DefaultWorkingDirectory)        
@@ -130,7 +120,7 @@ stages:
               kubernetesServiceConnection: aks_monitoring
               action: deploy
               manifests: |
-                $(Pipeline.Workspace)/s/manifests/azure-exporter-deployment.yaml
+                $(Pipeline.Workspace)/manifests/azure-exporter-deployment.yaml
               containers: |
                 michaelerb/azure-devops-exporter:$(tag)
 

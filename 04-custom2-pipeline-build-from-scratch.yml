@@ -10,7 +10,18 @@ trigger:
 
 # Variables
 variables:
+
+  # Container registry service connection established during pipeline creation
+  dockerRegistryServiceConnection: '8e06f498-fd9e-481c-8453-12d8c2da0245'
+  # imageRepository: 'app1nginxaks'
+  # containerRegistry: 'aksdevopsacr.azurecr.io'
+  # dockerfilePath: '**/Dockerfile'
   tag: '$(Build.BuildId)'
+  imagePullSecret: 'aksdevopsacr1755e8d5-auth'
+
+  # Agent VM image name
+  vmImageName: 'ubuntu-latest'
+
 # - name: testerx
 #   value: azure-devops-exporter
 # - name: version
@@ -99,7 +110,8 @@ stages:
             inputs:
               action: createSecret
               secretName: $(imagePullSecret)
-              dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
+              secretType: 'dockerRegistry'
+              kubernetesServiceConnection: 'aks_serviceconnection'
           - bash: echo $(tag)
           - task: KubernetesManifest@0
             displayName: Deploy to Kubernetes cluster

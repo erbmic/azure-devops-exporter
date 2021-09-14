@@ -103,18 +103,12 @@ stages:
           #     action: createSecret
           #     secretName: $(imagePullSecret)
           #     dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
-          - task: KubernetesManifest@0
-            displayName: Create imagePullSecret
-            inputs:
-              action: createSecret
-              secretName: $(imagePullSecret)
-              kubernetesServiceConnection: aks_serviceconnection
-              dockerRegistryEndpoint: docker_registry
+
           - task: KubernetesManifest@0
             displayName: Deploy to Kubernetes cluster
             inputs:
               #kubernetesServiceConnection: aks_monitoring
-              #kubernetesServiceConnection: aks_serviceconnection
+              kubernetesServiceConnection: aks_serviceconnection
               action: deploy
               manifests: |
                 $(Pipeline.Workspace)/manifests/azure-exporter-deployment.yaml

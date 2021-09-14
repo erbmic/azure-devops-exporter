@@ -98,13 +98,18 @@ stages:
         deploy:
           steps:
           - task: KubernetesManifest@0
+            displayName: Create imagePullSecret
+            inputs:
+              action: createSecret
+              secretName: $(imagePullSecret)
+              secretType: 'dockerRegistry'
+              kubernetesServiceConnection: 'aks_monitoring'
+              dockerRegistryEndpoint: 'docker_registry'
+          - bash: echo $(tag)
+          - task: KubernetesManifest@0
             displayName: Deploy to Kubernetes cluster
             inputs:
               #imagePullSecrets: docker-reg
-              imagePullSecrets: docker-reg
               kubernetesServiceConnection: aks_serviceconnection
               action: deploy
               manifests: |
-                $(Pipeline.Workspace)/manifests/azure-exporter-deployment.yaml
-              containers: |
-                michaelerb/azure-devops-exporter_azure-exporter

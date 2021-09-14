@@ -108,7 +108,7 @@ stages:
             inputs:
               action: createSecret
               secretName: $(imagePullSecret)
-              dockerRegistryEndpoint: aks_serviceconnection
+              dockerRegistryEndpoint: aks_monitoring
           - task: KubernetesManifest@0
             displayName: Deploy to Kubernetes cluster
             inputs:

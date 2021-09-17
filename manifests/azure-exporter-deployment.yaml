@@ -7,7 +7,7 @@ type: Opaque #default type for arbitrary key-value pairs
 data: 
   #values must be base64 encoded!
   #Linux: echo -n 'username' | base64
-  azdo-api-secret: emo2Y2IyMmFnb2ZheGgyc3lqZWc2YWF4ejdjM3c2YW8zNXZlaGxzbWRmeGc1aGdqdnE2cQ==
+  azdo-api-secret: MmY2Zm9pNHB0eGlmcnJpdTI0a25yY2F1NHliaXhzeGFnNm5uYXlod3pyejV1M3Nmd3VpYQo=
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -53,7 +53,7 @@ spec:
     spec:
       containers:
       - name: azure-exporter
-        image: michaelerb/azure-devops-exporter_azure-exporter
+        image: michaelerb/azure-testexporter:1.0
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080

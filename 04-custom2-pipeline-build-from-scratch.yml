@@ -98,19 +98,39 @@ stages:
         deploy:
           steps:
           - task: KubernetesManifest@0
+          #   displayName: Create imagePullSecret
+          #   inputs:
+          #     action: createSecret
+          #     secretName: $(imagePullSecret)
+          #     dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
+
+          # - task: KubernetesManifest@0
+          #   displayName: Deploy to Kubernetes cluster
+          #   inputs:
+          #     kubernetesServiceConnection: aks_monitoring
+          #     #kubernetesServiceConnection: aks_serviceconnection
+          #     action: deploy
+          #     manifests: |
+          #       $(Pipeline.Workspace)/manifests/azure-exporter-deployment.yaml
+          #     containers: |
+          #       michaelerb/azure-devops-exporter_azure-exporter
+
+          - task: KubernetesManifest@0
             displayName: Create imagePullSecret
             inputs:
               action: createSecret
               secretName: $(imagePullSecret)
-              dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
-
+              namespace: do
+              dockerRegistryEndpoint: docker_registry
+              
           - task: KubernetesManifest@0
             displayName: Deploy to Kubernetes cluster
             inputs:
-              kubernetesServiceConnection: aks_monitoring
-              #kubernetesServiceConnection: aks_serviceconnection
               action: deploy
+              namespace: do
               manifests: |
-                $(Pipeline.Workspace)/manifests/azure-exporter-deployment.yaml
+                $(System.ArtifactsDirectory)/manifests/azure-exporter-deployment.yaml
+              imagePullSecrets: |
+                $(imagePullSecret)
               containers: |
-                michaelerb/azure-devops-exporter_azure-exporter
+                michaelerb/azure-devops-exporter_off-prem

@@ -143,12 +143,6 @@ stages:
           #     action: createSecret
           #     secretName: $(imagePullSecret)
           #     dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
-          - task: Docker@2
-            displayName: Login to docker registry
-            inputs:
-              containerRegistry: 'docker_registry'
-              command: 'login'  
-          - bash: echo $(tag)
           - task: KubernetesManifest@0
             displayName: Deploy to Kubernetes cluster
             inputs:
@@ -157,4 +151,4 @@ stages:
               manifests: |
                 $(Pipeline.Workspace)/manifests/azure-exporter-deployment.yaml
               containers: |
-                michaelerb/azure-devops-exporter_off-prem
+                michaelerb/azure-devops-exporter_off-prem:0.1

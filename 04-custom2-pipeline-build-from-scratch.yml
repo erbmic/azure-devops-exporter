@@ -120,6 +120,7 @@ stages:
             inputs:
               action: createSecret
               secretName: $(imagePullSecret)
+              kubernetesServiceConnection: aks_monitoring
               namespace: do
               dockerRegistryEndpoint: docker_registry
               

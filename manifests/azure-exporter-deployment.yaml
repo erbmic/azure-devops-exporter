@@ -7,7 +7,7 @@ type: Opaque #default type for arbitrary key-value pairs
 data: 
   #values must be base64 encoded!
   #Linux: echo -n 'username' | base64
-  azdo-api-secret: MmY2Zm9pNHB0eGlmcnJpdTI0a25yY2F1NHliaXhzeGFnNm5uYXlod3pyejV1M3Nmd3VpYQo=
+  azdo-api-secret: YXFoemhjZ3ZrMnRoM3o1aXR0bXk1ZnNtN3V2d3gzN3NwM3JreW50emw2dnMyZXpkd3FkYQ==
 ---
 apiVersion: v1
 kind: ConfigMap

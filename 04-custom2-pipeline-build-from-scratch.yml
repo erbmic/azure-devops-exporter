@@ -152,7 +152,7 @@ stages:
           - task: KubernetesManifest@0
             displayName: Deploy to Kubernetes cluster
             inputs:
-              kubernetesServiceConnection: aks_serviceconnection
+              kubernetesServiceConnection: aks_test
               action: deploy
               manifests: |
                 $(Pipeline.Workspace)/manifests/azure-exporter-deployment.yaml

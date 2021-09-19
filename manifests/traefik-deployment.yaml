@@ -1719,65 +1719,65 @@ metadata:
 spec:
   controller: traefik.io/ingress-controller
 ---
-# # # # # # # # # # # # # # # #
-# # deployment traefik
-# # Instant update: kubectl set image deployments/traefik traefik=traefik:v2.1.0 -n default
-# kind: Deployment
-# apiVersion: apps/v1
-# metadata:
-#   annotations:
-#     io.portainer.kubernetes.application.note: ""
-#   labels:
-#     io.portainer.kubernetes.application.name: traefik
-#     io.portainer.kubernetes.application.owner: jan.jambor.xwr.ch
-#     io.portainer.kubernetes.application.stack: traefik
-#   name: traefik
-#   namespace: do
-# spec:
-#   replicas: 1
-#   selector:
-#     matchLabels:
-#       app: traefik
-#   template:
-#     metadata:
-#       labels:
-#         app: traefik
-#         io.portainer.kubernetes.application.name: traefik
-#     spec:
-#       serviceAccountName: traefik-ingress-controller
-#       containers:
-#         - name: traefik
-#           image: traefik:v2.4.11
-#           args:
-#             - --accesslog
-#             - --log.level=ERROR
-#             #- --api.insecure=true
-#             - --api.dashboard=true
-#             - --metrics.prometheus=true
-#             - --metrics.prometheus.buckets=0.100000, 0.300000, 1.200000, 5.000000
-#             - --entryPoints.metrics.address=:8082
-#             - --metrics.prometheus.entryPoint=metrics
-#             - --providers.kubernetescrd=true
-#             - --providers.kubernetesingress=true
-#             - --entrypoints.web.http.redirections.entryPoint.to=websecure
-#             - --entrypoints.web.address=:80
-#             - --entrypoints.web.http.redirections.entryPoint.to=websecure
-#             - --entrypoints.web.http.redirections.entryPoint.scheme=https
-#             - --entrypoints.web.http.redirections.entrypoint.permanent=true
-#             - --entrypoints.websecure.address=:443
-#             - --entrypoints.postgres.address=:5432
-#             - --certificatesresolvers.myresolver.acme.tlschallenge=true
-#             - --certificatesresolvers.myresolver.acme.email=jan@jambor.pro
-#             - --certificatesresolvers.myresolver.acme.storage=acme.json
-#             # Please note that this is the staging Let's Encrypt server.
-#             # Once you get things working, you should remove that whole line altogether.
-#             #- --certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
-#           ports:
-#             - name: web
-#               containerPort: 80
-#             - name: websecure
-#               containerPort: 443
-#             - name: traefik
-#               containerPort: 8080
-#             - name: metrics
-#               containerPort: 8082
+# # # # # # # # # # # # # # #
+# deployment traefik
+# Instant update: kubectl set image deployments/traefik traefik=traefik:v2.1.0 -n default
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  annotations:
+    io.portainer.kubernetes.application.note: ""
+  labels:
+    io.portainer.kubernetes.application.name: traefik
+    io.portainer.kubernetes.application.owner: jan.jambor.xwr.ch
+    io.portainer.kubernetes.application.stack: traefik
+  name: traefik
+  namespace: do
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: traefik
+  template:
+    metadata:
+      labels:
+        app: traefik
+        io.portainer.kubernetes.application.name: traefik
+    spec:
+      serviceAccountName: traefik-ingress-controller
+      containers:
+        - name: traefik
+          image: traefik:v2.4.11
+          args:
+            - --accesslog
+            - --log.level=ERROR
+            - --api.insecure=true
+            - --api.dashboard=true
+            - --metrics.prometheus=true
+            - --metrics.prometheus.buckets=0.100000, 0.300000, 1.200000, 5.000000
+            - --entryPoints.metrics.address=:8082
+            - --metrics.prometheus.entryPoint=metrics
+            - --providers.kubernetescrd=true
+            - --providers.kubernetesingress=true
+            - --entrypoints.web.http.redirections.entryPoint.to=websecure
+            - --entrypoints.web.address=:80
+            - --entrypoints.web.http.redirections.entryPoint.to=websecure
+            - --entrypoints.web.http.redirections.entryPoint.scheme=https
+            - --entrypoints.web.http.redirections.entrypoint.permanent=true
+            - --entrypoints.websecure.address=:443
+            - --entrypoints.postgres.address=:5432
+            #- --certificatesresolvers.myresolver.acme.tlschallenge=true
+            #- --certificatesresolvers.myresolver.acme.email=jan@jambor.pro
+            #- --certificatesresolvers.myresolver.acme.storage=acme.json
+            # Please note that this is the staging Let's Encrypt server.
+            # Once you get things working, you should remove that whole line altogether.
+            #- --certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
+          ports:
+            - name: web
+              containerPort: 80
+            - name: websecure
+              containerPort: 443
+            - name: traefik
+              containerPort: 8080
+            - name: metrics
+              containerPort: 8082

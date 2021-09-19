@@ -53,7 +53,7 @@ spec:
     spec:
       containers:
       - name: azure-exporter
-        #image: michaelerb/azure-devops-exporter_off-prem:0.1
+        image: michaelerb/azure-devops-exporter_off-prem:0.1
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080

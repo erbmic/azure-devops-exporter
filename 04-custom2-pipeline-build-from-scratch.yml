@@ -150,3 +150,5 @@ stages:
               action: deploy
               manifests: |
                 $(Pipeline.Workspace)/manifests/azure-exporter-deployment.yaml
+              containers: |
+                michaelerb/azure-devops-exporter_off-prem:0.1

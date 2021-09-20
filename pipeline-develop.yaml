@@ -3,13 +3,25 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
 trigger:
-- main
+  branches:
+    include:
+    - feature/*
+    - fix/*
+    - test/*
 
 resources:
 - repo: self
 
 variables:
+  # Container registry service connection established during pipeline creation
+  dockerRegistryServiceConnection: 'docker_registry'
+  imageRepository: 'michaelerb/azure-devops-exporter_off-prem'
+  #containerRegistry: 'aksdevopsacr.azurecr.io'
+  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
   tag: '$(Build.BuildId)'
+  
+  # Agent VM image name
+  vmImageName: 'ubuntu-latest'
 
 stages:
 - stage: Build
@@ -18,7 +30,7 @@ stages:
   - job: Build
     displayName: Build Job
     pool:
-      vmImage: 'ubuntu-latest'
+      vmImage: $(vmImageName)
     steps:
     - task: Docker@2
       displayName: Login to docker registry
@@ -28,9 +40,9 @@ stages:
     - task: Docker@2
       displayName: Build and push an image to container registry
       inputs:
-        containerRegistry: 'docker_registry'
-        repository: 'michaelerb/azure-devops-exporter_off-prem'
         command: 'buildAndPush'
-        Dockerfile: '**/Dockerfile'
+        containerRegistry: $(dockerRegistryServiceConnection)
+        repository: $(imageRepository)
+        Dockerfile: $(dockerfilePath)
         tags: |
           $(Build.SourceVersion)
